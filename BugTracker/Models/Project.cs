@@ -13,6 +13,8 @@ namespace BugTracker.Models
     {
         public int Id { get; set; }
 
+        public int CompanyId { get; set; }
+
         [Required]
         [StringLength(50)]
         [DisplayName("Project Name")]

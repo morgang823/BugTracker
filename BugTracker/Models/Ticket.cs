@@ -34,7 +34,7 @@ namespace BugTracker.Models
         [DisplayName("Project")]
         public int ProjectId { get; set; }
 
-        [DisplayName("ticket Type")]
+        [DisplayName("Ticket Type")]
 
         public int TicketTypeId { get; set; }
 

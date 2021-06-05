@@ -7,16 +7,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BugTracker.Data;
 using BugTracker.Models;
+using BugTracker.Models.ViewModels;
+using BugTracker.Services.Interfaces;
+using BugTracker.Extensions;
+using BugTracker.Models.Enums;
+using Microsoft.AspNetCore.Identity;
 
 namespace BugTracker.Controllers
 {
     public class ProjectsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IBTProjectService _projectService;
+        private readonly IBTCompanyInfoService _infoService;
+        private readonly UserManager<BTUser> _userManager;
 
-        public ProjectsController(ApplicationDbContext context)
+        public ProjectsController(ApplicationDbContext context, IBTProjectService projectService, IBTCompanyInfoService infoService, UserManager<BTUser> userManager)
         {
             _context = context;
+            _projectService = projectService;
+            _infoService = infoService;
+            _userManager = userManager;
         }
 
         // GET: Projects
@@ -25,6 +36,22 @@ namespace BugTracker.Controllers
             var applicationDbContext = _context.Project.Include(p => p.ProjectPriority);
             return View(await applicationDbContext.ToListAsync());
         }
+        public async Task<IActionResult> CompanyProjects()
+        {
+            //Get CompanyID
+            int companyId = User.Identity.GetCompanyId().Value;
+            var tickets = (await _infoService.GetAllProjectsAsync(companyId));
+            return View(tickets);
+        }
+
+        public async Task<IActionResult> MemberProjects()
+        {
+            //Get UserId
+            var userId = _userManager.GetUserId(User);
+            var projects = await _projectService.ListUserProjectsAsync(userId);
+            return View(projects);
+        }
+
 
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -35,7 +62,9 @@ namespace BugTracker.Controllers
             }
 
             var project = await _context.Project
+                .Include(p => p.Members)
                 .Include(p => p.ProjectPriority)
+                .Include(p => p.Tickets)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (project == null)
             {
@@ -120,6 +149,59 @@ namespace BugTracker.Controllers
             }
             ViewData["ProjectPriorityId"] = new SelectList(_context.Set<ProjectPriority>(), "Id", "Id", project.ProjectPriorityId);
             return View(project);
+        }
+
+        //[Authorize(Roles = "Admin, ProjectManager")]
+        [HttpGet]
+
+        public async Task<IActionResult> AssignUsers(int id)
+        {
+            ProjectMembersViewModel model = new();
+
+            //get company id
+            int companyId = User.Identity.GetCompanyId().Value;
+            Project project = (await _projectService.GetAllProjectsByCompanyAsync(companyId))
+                                .FirstOrDefault(project => project.Id == id);
+
+            model.Project = project;
+            List<BTUser> developers = await _infoService.GetMembersInRoleAsync(Roles.Developer.ToString(),companyId);
+            List<BTUser> submitters = await _infoService.GetMembersInRoleAsync(Roles.Submitter.ToString(), companyId);
+
+            List<BTUser> users = developers.Concat(submitters).ToList();
+            List<string> members = project.Members.Select(m => m.Id).ToList();
+            model.Users = new MultiSelectList(users, "Id", "FullName", members);
+            return View(model);
+
+        }
+
+        //POST Assing Users
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignUsers(ProjectMembersViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                if(model.SelectedUsers != null)
+                {
+                    List<string> memberIds = (await _projectService.GetMembersWithoutPMAsync(model.Project.Id))
+                                                        .Select(m => m.Id).ToList();
+                    foreach(string id in memberIds)
+                    {
+                        await _projectService.RemoveUserFromProjectAsync(id, model.Project.Id);
+                    }
+                    foreach (string id in model.SelectedUsers)
+                    {
+                        await _projectService.AddUserToProjectAsync(id, model.Project.Id);
+                    }
+                    //goto project details
+                    return RedirectToAction("Details", "Projects", new {id = model.Project.Id });
+                }
+                else
+                {
+                    //send an error message back
+                }
+            }
+            return View(model);
         }
 
         // GET: Projects/Delete/5

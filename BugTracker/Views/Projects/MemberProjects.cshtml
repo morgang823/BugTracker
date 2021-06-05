@@ -1,0 +1,120 @@
+﻿@model IEnumerable<BugTracker.Models.Project>
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1>Member Projects</h1>
+
+<p>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Company Projects Table</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example2" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Description)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.StartDate)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.EndDate)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ImageFileName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ImageFileData)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ImageContentType)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Archived)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Company)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ProjectPriority)
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.StartDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EndDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ImageFileName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ImageFileData)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ImageContentType)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Archived)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Company.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ProjectPriority.Id)
+                                        </td>
+                                        <td>
+                                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+   </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+@section Scripts{
+    <script>
+        $(function () {
+            $('#example2').DataTable();
+        });
+    </script>
+}

@@ -1,0 +1,136 @@
+﻿@model IEnumerable<BugTracker.Models.Ticket>
+
+@{
+    ViewData["Title"] = "AllTickets";
+}
+
+<h1>AllTickets</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">DataTable with default features</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example2" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Title)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Description)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Created)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Updated)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Archived)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ArchiveDate)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Project)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.TicketType)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.TicketPriority)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.TicketStatus)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.OwnerUser)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.DeveloperUser)
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Title)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Created)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Updated)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Archived)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ArchiveDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Project.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.TicketType.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.TicketStatus.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.OwnerUser.FirstName)
+                                            @Html.DisplayFor(modelItem => item.OwnerUser.LastName)
+
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.DeveloperUser.FirstName)
+                                            @Html.DisplayFor(modelItem => item.DeveloperUser.LastName)
+                                        </td>
+                                        <td>
+                                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+<!-- Page specific script -->
+@section Scripts{ <script>
+    $(function () {
+        $('#example2').DataTable();
+    });
+</script>
+}
+
+

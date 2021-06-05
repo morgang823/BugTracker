@@ -1,0 +1,128 @@
+﻿@model BugTracker.Models.ViewModels.MyTicketsViewModel
+
+@{
+    ViewData["Title"] = "MyTickets";
+}
+
+<h1>My Tickets</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<h1> Submitted Tickets</h1>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Submitted Tickets</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example2" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Created</th>
+                                    <th>Developer</th>
+                                    <th>Submitter</th>
+                                    <th>Description</th>
+                                    <th>Type</th>
+                                    <th>Priority</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var ticket in Model.SubmittedTickets)
+                                {
+                                    <tr>
+                                        <td>@ticket.Title</td>
+                                        <td>@ticket.Created</td>
+                                        <td>@ticket.DeveloperUser?.FullName</td>
+                                        <td>@ticket.OwnerUser?.FullName</td>
+                                        <td>@ticket.Description</td>
+                                        <td>@ticket.TicketType.Name</td>
+                                        <td>@ticket.TicketPriority.Name</td>
+                                        <td>
+                                            <a asp-action="Edit" asp-route-id="@ticket.Id">Edit</a> |
+                                            <a asp-action="Details" asp-route-id="@ticket.Id">Details</a> |
+                                            <a asp-action="Delete" asp-route-id="@ticket.Id">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+<br />
+<h1> Developer Tickets</h1>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Developer Tickets Data Table</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example2" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Created</th>
+                                    <th>Developer</th>
+                                    <th>Submitter</th>
+                                    <th>Description</th>
+                                    <th>Type</th>
+                                    <th>Priority</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var ticket in Model.DevTickets)
+                                {
+                                    <tr>
+                                        <td>@ticket.Title</td>
+                                        <td>@ticket.Created</td>
+                                        <td>@ticket.DeveloperUser?.FullName</td>
+                                        <td>@ticket.OwnerUser?.FullName</td>
+                                        <td>@ticket.Description</td>
+                                        <td>@ticket.TicketType.Name</td>
+                                        <td>@ticket.TicketPriority.Name</td>
+                                        <td>
+                                            <a asp-action="Edit" asp-route-id="@ticket.Id">Edit</a> |
+                                            <a asp-action="Details" asp-route-id="@ticket.Id">Details</a> |
+                                            <a asp-action="Delete" asp-route-id="@ticket.Id">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+
+@section Scripts{
+    <script>
+        $(function () {
+            $('#example2').DataTable();
+        });
+    </script>
+}

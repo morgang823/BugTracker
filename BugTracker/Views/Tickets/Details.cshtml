@@ -4,87 +4,278 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Ticket Details</h1>
+<!-- Content Wrapper. Contains page content -->
 
-<div>
-    <h4>Ticket</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Updated)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Archived)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Archived)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ArchiveDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ArchiveDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Project)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Project.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketType.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketPriority)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketPriority.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketStatus)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketStatus.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OwnerUser)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OwnerUser.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DeveloperUser)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeveloperUser.Id)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active"><a href="#">Project</a></li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                </h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+                        <div class="row">
+                            <div class="col-12 col-sm-4">
+                                <div class="info-box">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-black">
+                                            Ticket Priority
+                                        </span>
+                                        <span class="info-box-number text-center text-black mb-0">
+                                            @Html.DisplayFor(model => model.TicketPriority.Name)
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                <div class="info-box">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-black">
+                                            Ticket Status
+                                        </span>
+                                        <span class="info-box-number text-center text-black mb-0">
+                                            @Html.DisplayFor(model => model.TicketStatus.Name)
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                <div class="info-box">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-black">
+                                            Ticket Type
+                                        </span>
+                                        <span class="info-box-number text-center text-black mb-0">
+                                            @Html.DisplayFor(model => model.TicketType.Name)
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Ticket Comments</h4>
+                                <form asp-action="Create" asp-controller="TicketComments" method="post">
+                                    <input type="hidden" name="TicketId" value="@Model.Id" />
+                                    <textarea name="Comment" rows="10" class="form-control text-body"></textarea>
+                                    <button class="btn btn-warning text-black font-weight-bold btn-block btn-lg" type="submit">Submit</button>
+                                </form>
+                                <h4>@Model.Comments.Count Comment(s)</h4>
+                                @foreach (var ticketComment in Model.Comments.OrderByDescending(c => c.Created))
+                                {
+                                    <div class="post">
+                                        <div class="user-block">
+                                            <img class="img-circle img-bordered-sm" src="../../dist/img/user1-128x128.jpg" alt="user image">
+                                            <span class="username">
+                                                <a href="#">@ticketComment.UserId</a>
+                                            </span>
+                                            <span class="description">posted on @ticketComment.Created.ToString("MMM dd, yyyy")</span>
+                                        </div>
+                                        <!-- /.user-block -->
+                                        <p>
+                                            @Html.Raw(ticketComment.Comment)
+                                        </p>
+
+                                        <p>
+                                            <a href="#" class="link-black text-sm"><i class="fas fa-link mr-1"></i> Demo File 1 v2</a>
+                                        </p>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+                        <h3 class="text-primary">
+                            <i class="fas fa-paint-brush"></i>@Html.DisplayFor(model => model.Title)
+                        </h3>
+                        <h5 class="text-white">
+                            @Html.DisplayFor(model => model.Description)
+                        </h5>
+                        <br>
+                        <div class="text-white">
+                            <p class="text-lg">
+                                Company: @Html.DisplayFor(model => model.Project.Company.Id)
+                                <b class="d-block">Project: @Html.DisplayFor(model => model.Project.Name)</b>
+                            </p>
+                            <p class="text-lg">
+                                Ticket Owner
+                                <b class="d-block">@Html.DisplayFor(model => model.OwnerUser.FullName)</b>
+                            </p>
+                            <p class="text-lg">
+                                Ticket Devloper
+                                <b class="d-block">@Html.DisplayFor(model => model.DeveloperUser.FullName)</b>
+                            </p>
+
+                        </div>
+
+                        <h5 class="mt-5 text-white">Ticket Attachments</h5>
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Functional-requirements.docx</a>
+                            </li>
+                            <li>
+                                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i> UAT.pdf</a>
+                            </li>
+                            <li>
+                                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-envelope"></i> Email-from-flatbal.mln</a>
+                            </li>
+                            <li>
+                                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-image "></i> Logo.png</a>
+                            </li>
+                            <li>
+                                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Contract-10_12_2014.docx</a>
+                            </li>
+                        </ul>
+                        <form enctype="multipart/form-data" method="post">
+                            <div class="form-group">
+                                <label class="control-label"></label>
+                                <input type="file" class="form-control" />
+                                <span class="text-black"></span>
+                            </div>
+                            <div class="form-group text-center mt-5 mb-3">
+                                <input type="submit" value="Add Files" class="btn btn-lg btn-warning" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+        <!-- Timelime example  -->
+        <h3>Ticket History</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <!-- The time line -->
+                <div class="timeline">
+                    <!-- timeline time label -->
+                    <div class="time-label">
+                        <span class="bg-red">10 Feb. 2014</span>
+                    </div>
+                    <!-- /.timeline-label -->
+                    <!-- timeline item -->
+                    <div>
+                        <i class="fas fa-envelope bg-blue"></i>
+                        <div class="timeline-item">
+                            <span class="time"><i class="fas fa-clock"></i> 12:05</span>
+                            <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
+
+                            <div class="timeline-body">
+                                Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
+                                weebly ning heekya handango imeem plugg dopplr jibjab, movity
+                                jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
+                                quora plaxo ideeli hulu weebly balihoo...
+                            </div>
+                            <div class="timeline-footer">
+                                <a class="btn btn-primary btn-sm">Read more</a>
+                                <a class="btn btn-danger btn-sm">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END timeline item -->
+                    <!-- timeline item -->
+                    <div>
+                        <i class="fas fa-user bg-green"></i>
+                        <div class="timeline-item">
+                            <span class="time"><i class="fas fa-clock"></i> 5 mins ago</span>
+                            <h3 class="timeline-header no-border"><a href="#">Sarah Young</a> accepted your friend request</h3>
+                        </div>
+                    </div>
+                    <!-- END timeline item -->
+                    <!-- timeline item -->
+                    <div>
+                        <i class="fas fa-comments bg-yellow"></i>
+                        <div class="timeline-item">
+                            <span class="time"><i class="fas fa-clock"></i> 27 mins ago</span>
+                            <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
+                            <div class="timeline-body">
+                                Take me to your leader!
+                                Switzerland is small and neutral!
+                                We are more like Germany, ambitious and misunderstood!
+                            </div>
+                            <div class="timeline-footer">
+                                <a class="btn btn-warning btn-sm">View comment</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END timeline item -->
+                    <!-- timeline time label -->
+                    <div class="time-label">
+                        <span class="bg-green">3 Jan. 2014</span>
+                    </div>
+                    <!-- /.timeline-label -->
+                    <!-- timeline item -->
+                    <div>
+                        <i class="fa fa-camera bg-purple"></i>
+                        <div class="timeline-item">
+                            <span class="time"><i class="fas fa-clock"></i> 2 days ago</span>
+                            <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
+                            <div class="timeline-body">
+                                <img src="https://placehold.it/150x100" alt="...">
+                                <img src="https://placehold.it/150x100" alt="...">
+                                <img src="https://placehold.it/150x100" alt="...">
+                                <img src="https://placehold.it/150x100" alt="...">
+                                <img src="https://placehold.it/150x100" alt="...">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END timeline item -->
+                    <!-- timeline item -->
+                    <div>
+                        <i class="fas fa-video bg-maroon"></i>
+
+                        <div class="timeline-item">
+                            <span class="time"><i class="fas fa-clock"></i> 5 days ago</span>
+
+                            <h3 class="timeline-header"><a href="#">Mr. Doe</a> shared a video</h3>
+
+                            <div class="timeline-body">
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/tMWkeBIohBs" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                            <div class="timeline-footer">
+                                <a href="#" class="btn btn-sm bg-maroon">See comments</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END timeline item -->
+                    <div>
+                        <i class="fas fa-clock bg-gray"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.timeline -->
+
+    </section>
