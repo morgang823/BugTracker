@@ -24,7 +24,7 @@ namespace BugTracker.Models
         [DisplayName("Created Date")]
         [DataType(DataType.DateTime)]
 
-        public DateTime Created { get; set; }
+        public DateTimeOffset Created { get; set; }
         [DisplayName("Team Member")]
 
         public string UserId { get; set; }
@@ -35,6 +35,7 @@ namespace BugTracker.Models
         public virtual Ticket Ticket { get; set; }
         public virtual BTUser User { get; set; }
 
+        public virtual Project Project { get; set; }
 
 
     }

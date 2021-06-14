@@ -30,7 +30,7 @@ namespace BugTracker.Services.Interfaces
         public async Task<List<Project>> GetAllProjectsAsync(int companyId)
         {
             List<Project> projects = new();
-            projects = await _context.Project
+            projects = await _context.Projects
                 .Include(p => p.Members)
                 .Include(p=>p.ProjectPriority)
                 .Include(p => p.Tickets)
@@ -75,7 +75,7 @@ namespace BugTracker.Services.Interfaces
             if(companyId != null) {
                company = await _context.Company
                     .Include(c => c.Members)
-                    .Include(c => c.Project)
+                    .Include(c => c.Projects)
                     .Include(c => c.Invites)
                     .FirstOrDefaultAsync(c => c.Id == companyId);
             }

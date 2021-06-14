@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - BugTracker</title>
+    <title>@ViewData["Title"] - A Bug's Life(Issue Tracker)</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <!-- Google Font: Source Sans Pro -->
@@ -12,7 +12,7 @@
     <link href="~/plugins/fontawesome-free/css/all.css" rel="stylesheet" />
     <link runat="server" rel="shortcut icon" href="~/icons8-insect-48.png" type="image/x-icon" />
     <link runat="server" rel="icon" href="~/icons8-insect-48.png" type="image/ico" />
-
+    <script src="https://use.fontawesome.com/dfe9602041.js"></script>
     <!-- overlayScrollbars -->
     <link href="~/plugins/overlayScrollbars/css/OverlayScrollbars.css" rel="stylesheet" />
     <!-- Theme style -->
@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 </head>
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <partial name="_LogoutPartial" />
     <div class="wrapper">
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
@@ -35,7 +36,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -49,7 +50,12 @@
                 <li class="nav-item d-none d-sm-inline-block">
                     <a class="nav-link text-white" asp-area="" asp-controller="Tickets" asp-action="Index">Tickets</a>
                 </li>
-                <partial name="_LoginPartial" />
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a class="nav-link text-white" href="javascript:documnet.getElementById('logoutForm').submit();">
+                        <i class="nav-icon fa fa-user"></i>
+                    </a>
+                </li>
+                <partial name="LoginPartial" />
             </ul>
 
             <!-- Right navbar links -->
@@ -178,7 +184,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link">
-                <img src="~/icons8-insect-48.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <img src="~/icons8-insect-48.png" alt="ABL Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">A Bug's Life</span>
             </a>
 
@@ -199,7 +205,7 @@
                     <div class="input-group" data-widget="sidebar-search">
                         <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
                         <div class="input-group-append">
-                            <button class="btn btn-sidebar">
+                            <button class="btn btn-sidebar btn-success">
                                 <i class="fas fa-search fa-fw"></i>
                             </button>
                         </div>
@@ -212,7 +218,7 @@
                         <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon far fa-envelope"></i>
+                                <i class="nav-icon fa fa-envelope"></i>
                                 <p>
                                     Company
                                     <i class="fas fa-angle-left right"></i>
@@ -226,22 +232,26 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-white" asp-area="" asp-controller="Companies" asp-action="">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="UserRoles" asp-action="ManageUserRoles">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Company Members</p>
+                                        <p>Manage User Roles</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-white" asp-area="" asp-controller="Invites" asp-action="Create">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Invite New Members</p>
-                                    </a>
-                                </li>
+                                @if ((User.IsInRole("Administrator")) || (User.IsInRole("ProjectManager")))
+                                {
+
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" asp-area="" asp-controller="Invites" asp-action="Create">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Invite New Members</p>
+                                        </a>
+                                    </li>
+                                }
                             </ul>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon far fa-envelope"></i>
+                                <i class="nav-icon fa fa-folder-open"></i>
                                 <p>
                                     Projects
                                     <i class="fas fa-angle-left right"></i>
@@ -250,27 +260,30 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a class="nav-link text-white" asp-area="" asp-controller="Projects" asp-action="CompanyProjects">
-                                        <i class="far fa-circle nav-icon"></i>
+                                        <i class="fas fa-user-chart nav-icon"></i>
                                         <p>All Projects</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-white" asp-area="" asp-controller="Projects" asp-action="MemberProjects">
-                                        <i class="far fa-circle nav-icon"></i>
+                                        <i class="fas fa-user-chart nav-icon"></i>
                                         <p>Member Projects</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-white" asp-area="" asp-controller="Projects" asp-action="Create">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Create New Project</p>
-                                    </a>
-                                </li>
+                                @if ((User.IsInRole("Administrator")) || (User.IsInRole("ProjectManager")))
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" asp-area="" asp-controller="Projects" asp-action="Create">
+                                            <i class="fas fa-folder-plus nav-icon"></i>
+                                            <p>Create New Project</p>
+                                        </a>
+                                    </li>
+                                }
                             </ul>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon far fa-envelope"></i>
+                                <i class="nav-icon fa fa-ticket"></i>
                                 <p>
                                     Tickets
                                     <i class="fas fa-angle-left right"></i>
@@ -279,22 +292,26 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a class="nav-link text-white" asp-area="" asp-controller="Tickets" asp-action="AllTickets">
-                                        <i class="far fa-circle nav-icon"></i>
+                                        <i class="fas fa-ticket-alt nav-icon"></i>
                                         <p>All Tickets</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-white" asp-area="" asp-controller="Tickets" asp-action="MyTickets">
-                                        <i class="far fa-circle nav-icon"></i>
+                                        <i class="fas fa-ticket-alt nav-icon"></i>
                                         <p>My Tickets</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-white" asp-area="" asp-controller="Tickets" asp-action="Create">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Create a Ticket</p>
-                                    </a>
-                                </li>
+                                @if ((User.IsInRole("Administrator")) || (User.IsInRole("ProjectManager")))
+                                {
+
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" asp-area="" asp-controller="Tickets" asp-action="Create">
+                                            <i class="fas fa-plus-square nav-icon"></i>
+                                            <p>Create a Ticket</p>
+                                        </a>
+                                    </li>
+                                }
                             </ul>
                         </li>
                     </ul>
@@ -338,6 +355,7 @@
     <script src="~/plugins/jquery-mapael/jquery.mapael.js"></script>
     <script src="~/plugins/jquery-mapael/maps/usa_states.js"></script>
     <!-- ChartJS -->
+    <script src="~/plugins/chart.js/Chart.js"></script>
     <!-- DataTables  & Plugins -->
     <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>

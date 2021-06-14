@@ -19,7 +19,7 @@ namespace BugTracker.Models
 
         [DisplayName("Created Date")]
         [DataType(DataType.DateTime)]
-        public DateTime Created { get; set; }
+        public DateTimeOffset Created { get; set; }
 
         public int TicketId { get; set; } //FK
 

@@ -3,86 +3,88 @@
 @{
     ViewData["Title"] = "Create";
 }
+@if ((User.IsInRole("Administrator")) || (User.IsInRole("ProjectManager")))
+{
 
-<!-- Content Header (Page header) -->
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Create a Ticket</h1>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li class="breadcrumb-item active">Add Ticket</li>
-                </ol>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Create a Project</h1>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a asp-area="" asp-controller="Home" asp-action="Dashboard">Home</a>
+                        </li>
+                        <li class="breadcrumb-item active">Add Project</li>
+                    </ol>
+                </div>
             </div>
-        </div>
-    </div><!-- /.container-fluid -->
-</section>
+        </div><!-- /.container-fluid -->
+    </section>
 
-<!-- Main content -->
-<section class="content">
-    <form asp-action="Create">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">General</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label asp-for="Name" class="form-control"></label>
-                            <input asp-for="Name" class="form-control bg-light text-dark font-weight-bold" id="inputName" />
-                            <span asp-validation-for="Name" class="text-danger"></span>
-
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Description" class="form-control"></label>
-                            <span asp-validation-for="Description" class="text-danger"></span>
-                            <textarea id="inputDescription" class="form-control bg-light text-dark" rows="4"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="StartDate" class="form-control"></label>
-                            <input asp-for="StartDate" class="form-control bg-light text-dark font-weight-bold" />
-                            <span asp-validation-for="StartDate" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="EndDate" class="form-control"></label>
-                            <input asp-for="EndDate" class="form-control bg-light text-dark font-weight-bold" />
-                            <span asp-validation-for="EndDate" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <div class="form-group">
-                                <select asp-for="ProjectPriorityId" class="form-control" asp-items="ViewBag.ProjectPriorityId"><option>Select a Priority </option></select>
+    <!-- Main content -->
+    <section class="content">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">General</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
                             </div>
                         </div>
-                        <div class="form-group form-check">
-                            <label class="form-check-label">
-                                <input class="form-check-input" asp-for="Archived" /> @Html.DisplayNameFor(model => model.Archived)
-                            </label>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label asp-for="Name" class="form-control"></label>
+                                <input asp-for="Name" class="form-control bg-light text-dark font-weight-bold" id="inputName" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description" class="form-control"></label>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                                <textarea id="inputDescription" class="form-control bg-light text-dark" rows="4"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="StartDate" class="form-control"></label>
+                                <input asp-for="StartDate" class="form-control bg-light text-dark font-weight-bold" />
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="EndDate" class="form-control"></label>
+                                <input asp-for="EndDate" class="form-control bg-light text-dark font-weight-bold" />
+                                <span asp-validation-for="EndDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <select asp-for="ProjectPriorityId" class="form-control" asp-items="ViewBag.ProjectPriorityId"><option>Select a Priority </option></select>
+                                </div>
+                            </div>
+                            <div class="form-group form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="Archived" /> @Html.DisplayNameFor(model => model.Archived)
+                                </label>
+                            </div>
+                            <!-- /.card-body -->
                         </div>
-                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                        <a class="btn btn-primary" asp-controller="Home" asp-action="Dashboard">Back to List</a>
                     </div>
                 </div>
-                <!-- /.card -->
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                    <a class="btn btn-primary" asp-action="Index">Back to List</a>
-                </div>
             </div>
-        </div>
-    </form>
-</section>
-<!-- /.content -->
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        </form>
+    </section>
+    <!-- /.content -->
 }
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
 

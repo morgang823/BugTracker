@@ -1,4 +1,7 @@
 ﻿@model BugTracker.Models.Ticket
+@using BugTracker.Services.Interfaces
+@inject IBTFileService BTFileService 
+@inject IBTHistoryService HistoryService
 
 @{
     ViewData["Title"] = "Details";
@@ -22,7 +25,6 @@
             </div>
         </div><!-- /.container-fluid -->
     </section>
-
     <!-- Main content -->
     <section class="content">
         <!-- Default box -->
@@ -30,15 +32,6 @@
             <div class="card-header">
                 <h3 class="card-title">
                 </h3>
-
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -86,7 +79,7 @@
                                 <h4>Ticket Comments</h4>
                                 <form asp-action="Create" asp-controller="TicketComments" method="post">
                                     <input type="hidden" name="TicketId" value="@Model.Id" />
-                                    <textarea name="Comment" rows="10" class="form-control text-body"></textarea>
+                                    <textarea name="Comment" rows="10" class="form-control text-body text-white"></textarea>
                                     <button class="btn btn-warning text-black font-weight-bold btn-block btn-lg" type="submit">Submit</button>
                                 </form>
                                 <h4>@Model.Comments.Count Comment(s)</h4>
@@ -103,10 +96,6 @@
                                         <!-- /.user-block -->
                                         <p>
                                             @Html.Raw(ticketComment.Comment)
-                                        </p>
-
-                                        <p>
-                                            <a href="#" class="link-black text-sm"><i class="fas fa-link mr-1"></i> Demo File 1 v2</a>
                                         </p>
                                     </div>
                                 }
@@ -137,32 +126,46 @@
 
                         </div>
 
-                        <h5 class="mt-5 text-white">Ticket Attachments</h5>
-                        <ul class="list-unstyled">
-                            <li>
-                                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Functional-requirements.docx</a>
-                            </li>
-                            <li>
-                                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i> UAT.pdf</a>
-                            </li>
-                            <li>
-                                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-envelope"></i> Email-from-flatbal.mln</a>
-                            </li>
-                            <li>
-                                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-image "></i> Logo.png</a>
-                            </li>
-                            <li>
-                                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Contract-10_12_2014.docx</a>
-                            </li>
-                        </ul>
-                        <form enctype="multipart/form-data" method="post">
-                            <div class="form-group">
-                                <label class="control-label"></label>
-                                <input type="file" class="form-control" />
-                                <span class="text-black"></span>
-                            </div>
-                            <div class="form-group text-center mt-5 mb-3">
-                                <input type="submit" value="Add Files" class="btn btn-lg btn-warning" />
+                        <h5 class="mt-5 text-white">Ticket Attachments</h5><hr />
+                        <div class="row clearfix">
+                            @foreach (TicketAttachment item in Model.Attachments)
+                            {
+                                <div class="col-sm-2">
+                                    <div class="card">
+                                        <div class="file">
+                                            <a asp-action="ShowFile" asp-controller="Tickets" asp-route-Id="@item.Id">
+                                                <div class="icon">
+                                                    <img src="@BTFileService.GetFileIcon(item.FileName)" style="height:60px;width:60px" />
+                                                </div>
+                                                <div class="file-name">
+                                                    <p class="m-b-5 text-muted">@System.IO.Path.GetFileNameWithoutExtension(item.FileName)</p>
+                                                    <small>Size: @BTFileService.FormatFileSize(item.FileData.Length) <span class="date text-muted">@item.Created.ToString("MMM dd, yyyy")</span></small>
+                                                </div>
+                                            </a>
+                                            <div class="hover">
+                                                <button type="button" class="btn btn-danger">
+                                                    Delete Attachment
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <hr />
+                        <form asp-action="Create" asp-controller="TicketAttachments" enctype="multipart/form-data" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="@Model.Id" name="TicketId">
+                            <div class="media-body ml-3">
+                                <label class="form-label d-block mb-2">Add Attachment</label>
+                                <label>
+                                    Description
+                                    <input asp-for="@Model.Attachments.FirstOrDefault().Description" type="text" class="form-control" />
+                                </label><br />
+                                <label class="btn btn-outline-primary btn-sm">
+                                    <input asp-for="@Model.Attachments.FirstOrDefault().FormFile" type="file" />
+                                </label>
+                                <button type="submit" class="btn btn-outline-secondary btn-sm md-btn-flat">Submit</button>
                             </div>
                         </form>
                     </div>
@@ -175,107 +178,35 @@
         <h3>Ticket History</h3>
         <div class="row">
             <div class="col-md-12">
+
                 <!-- The time line -->
                 <div class="timeline">
-                    <!-- timeline time label -->
-                    <div class="time-label">
-                        <span class="bg-red">10 Feb. 2014</span>
-                    </div>
-                    <!-- /.timeline-label -->
-                    <!-- timeline item -->
-                    <div>
-                        <i class="fas fa-envelope bg-blue"></i>
-                        <div class="timeline-item">
-                            <span class="time"><i class="fas fa-clock"></i> 12:05</span>
-                            <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
-
-                            <div class="timeline-body">
-                                Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-                                weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                                jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                                quora plaxo ideeli hulu weebly balihoo...
-                            </div>
-                            <div class="timeline-footer">
-                                <a class="btn btn-primary btn-sm">Read more</a>
-                                <a class="btn btn-danger btn-sm">Delete</a>
-                            </div>
+                    @foreach (TicketHistory item in Model.History)
+                    {
+                        <!-- timeline time label -->
+                        <div class="time-label">
+                            <span class="bg-red">@item.Created</span>
                         </div>
-                    </div>
-                    <!-- END timeline item -->
-                    <!-- timeline item -->
-                    <div>
-                        <i class="fas fa-user bg-green"></i>
-                        <div class="timeline-item">
-                            <span class="time"><i class="fas fa-clock"></i> 5 mins ago</span>
-                            <h3 class="timeline-header no-border"><a href="#">Sarah Young</a> accepted your friend request</h3>
-                        </div>
-                    </div>
-                    <!-- END timeline item -->
-                    <!-- timeline item -->
-                    <div>
-                        <i class="fas fa-comments bg-yellow"></i>
-                        <div class="timeline-item">
-                            <span class="time"><i class="fas fa-clock"></i> 27 mins ago</span>
-                            <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
-                            <div class="timeline-body">
-                                Take me to your leader!
-                                Switzerland is small and neutral!
-                                We are more like Germany, ambitious and misunderstood!
-                            </div>
-                            <div class="timeline-footer">
-                                <a class="btn btn-warning btn-sm">View comment</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END timeline item -->
-                    <!-- timeline time label -->
-                    <div class="time-label">
-                        <span class="bg-green">3 Jan. 2014</span>
-                    </div>
-                    <!-- /.timeline-label -->
-                    <!-- timeline item -->
-                    <div>
-                        <i class="fa fa-camera bg-purple"></i>
-                        <div class="timeline-item">
-                            <span class="time"><i class="fas fa-clock"></i> 2 days ago</span>
-                            <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-                            <div class="timeline-body">
-                                <img src="https://placehold.it/150x100" alt="...">
-                                <img src="https://placehold.it/150x100" alt="...">
-                                <img src="https://placehold.it/150x100" alt="...">
-                                <img src="https://placehold.it/150x100" alt="...">
-                                <img src="https://placehold.it/150x100" alt="...">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END timeline item -->
-                    <!-- timeline item -->
-                    <div>
-                        <i class="fas fa-video bg-maroon"></i>
-
-                        <div class="timeline-item">
-                            <span class="time"><i class="fas fa-clock"></i> 5 days ago</span>
-
-                            <h3 class="timeline-header"><a href="#">Mr. Doe</a> shared a video</h3>
-
-                            <div class="timeline-body">
-                                <div class="embed-responsive embed-responsive-16by9">
-                                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/tMWkeBIohBs" allowfullscreen></iframe>
+                        <!-- timeline item -->
+                        <div>
+                            <i class="fas fa-envelope bg-blue"></i>
+                            <div class="timeline-item">
+                                <span class="time"><i class="fas fa-clock"></i> @item.Ticket </span>
+                                <h3 class="timeline-header">@item.User.FullName </h3>
+                                <div class="timeline-body">
+                                  @item.Property  @item.Description 
+                                </div>
+                                <div class="timeline-footer">
+                                    <a class="btn btn-primary btn-sm">Read more</a>
+                                    <a class="btn btn-danger btn-sm">Delete</a>
                                 </div>
                             </div>
-                            <div class="timeline-footer">
-                                <a href="#" class="btn btn-sm bg-maroon">See comments</a>
-                            </div>
                         </div>
-                    </div>
-                    <!-- END timeline item -->
-                    <div>
-                        <i class="fas fa-clock bg-gray"></i>
-                    </div>
+                        <!-- END timeline item -->
+                    }
                 </div>
             </div>
             <!-- /.col -->
         </div>
         <!-- /.timeline -->
-
     </section>

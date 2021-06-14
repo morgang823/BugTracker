@@ -55,7 +55,7 @@ namespace BugTracker.Services
         {
             try
             {
-                List<Ticket> tickets = await _context.Project.Include(p => p.Company)
+                List<Ticket> tickets = await _context.Projects.Include(p => p.Company)
                                                                     .Where(p => p.CompanyId == companyId)
                                                                     .SelectMany(p => p.Tickets)
                                                                     .Include(t => t.Attachments)
@@ -83,7 +83,7 @@ namespace BugTracker.Services
             List<Ticket> tickets = new();
             try
             {
-                tickets = await _context.Project.Where(p => p.CompanyId == companyId)
+                tickets = await _context.Projects.Where(p => p.CompanyId == companyId)
                                                          .SelectMany(p => p.Tickets)
                                                         .Include(t => t.Attachments)
                                                         .Include(t => t.Comments)
@@ -156,21 +156,25 @@ namespace BugTracker.Services
         public async Task<List<Ticket>> GetAllTicketsByStatusAsync(int companyId, string statusName)
         {
             int statusId = (await LookupTicketStatusIdAsync(statusName)).Value;
-            return await _context.Project.Where(p => p.CompanyId == companyId)
+            return await _context.Projects.Where(p => p.CompanyId == companyId)
                         .SelectMany(p => p.Tickets)
                         .Where(t => t.TicketStatusId == statusId).ToListAsync();
         }
 
-        public Task<List<Ticket>> GetAllTicketsByTypeAsync(int companyId, string typeName)
+        public async Task<List<Ticket>> GetAllTicketsByTypeAsync(int companyId, string typeName)
         {
-            throw new NotImplementedException();
+            int typeId = (await LookupTicketTypeIdAsync(typeName)).Value;
+            return await _context.Projects.Where(p => p.CompanyId == companyId)
+                        .SelectMany(p => p.Tickets)
+                        .Where(t => t.TicketTypeId == typeId).ToListAsync();
+
         }
 
         public async Task<List<Ticket>> GetArchivedTicketsByCompanyAsync(int companyId)
         {
             try
             {
-                List<Ticket> tickets = await _context.Project.Where(p => p.CompanyId == companyId)
+                List<Ticket> tickets = await _context.Projects.Where(p => p.CompanyId == companyId)
                                                                     .SelectMany(p => p.Tickets)
                                                                     .Include(t => t.Attachments)
                                                                     .Include(t => t.Comments)

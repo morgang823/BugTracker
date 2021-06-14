@@ -29,7 +29,7 @@ namespace BugTracker.Services
         }
         private async Task<Project> GetProjectByIdAsync(int projectId)
         {
-            return await _context.Project.FirstOrDefaultAsync(p => p.Id == projectId);
+            return await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
         }
         public async Task<bool> AddProjectManagerAsync(string userId, int projectId)
         {

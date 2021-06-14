@@ -1,0 +1,32 @@
+﻿@model BugTracker.Models.ViewModels.AssignDeveloperViewModel
+
+@{
+    ViewData["Title"] = "Assign Ticket";
+}
+<div class="row">
+    <div class="col">
+        <form asp-action="AssignTicket" method="post">
+            <div class="card">
+                <div class="card-header"></div>
+                <div class="card-body">
+                    <input asp-for="@Model.Ticket.Id" hidden />
+                    <input asp-for="@Model.Ticket.ProjectId" />
+                    <div class="row clearfix">
+                        <div class="col-md-6 col-sm-12">
+                            <label>Select A Developer</label>
+                            <div class="form-group">
+                                <select class="form-control" asp-for="DeveloperId" asp-items="Model.Developers">
+                                    <option>Select Developer</option>
+                                </select>
+                            </div>
+                            <div class="mt-4 form-group">
+                                <button type="submit" class="btn btn-outline-secondary">Submit</button>
+                                <button asp-action="Dashboard" asp-controller="Home" class="btn btn-outline-warning">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

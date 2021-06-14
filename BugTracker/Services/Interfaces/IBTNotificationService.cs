@@ -6,12 +6,22 @@ using System.Threading.Tasks;
 
 namespace BugTracker.Services.Interfaces
 {
-   public interface IBTNotificationService
-    {
-        Task AddHistory(Ticket oldTicket, Ticket newTicket, string userId);
+   public interface IBTNotificationService { 
 
-        Task<List<TicketHistory>> GetProjectTicketsHistories(int projectId);
+        public Task SaveNotificationAsync(Notification notification);
 
-        Task<List<TicketHistory>> GetCompanyTicketsHistories(int companyId);
+        public Task AdminsNotificationAsync(Notification notification, int companyId);
+
+        public Task MembersNotificationAsync(Notification notification, List<BTUser> members);
+
+        public Task EmailNotificationAsync(Notification notification, string emailSubject);
+
+        public Task SMSNotificationAsync(string phone, Notification notification);
+
+        public Task<List<Notification>> GetReceivedNotificationsAsync(string userId);
+
+        public Task<List<Notification>> GetSentNotificationsAsync(string userId);
+
     }
 }
+

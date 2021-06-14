@@ -16,7 +16,7 @@ namespace BugTracker.Data
         public DbSet<BugTracker.Models.Company> Company { get; set; }
         public DbSet<BugTracker.Models.Invite> Invite { get; set; }
         public DbSet<BugTracker.Models.Notification> Notification { get; set; }
-        public DbSet<BugTracker.Models.Project> Project { get; set; }
+        public DbSet<BugTracker.Models.Project> Projects { get; set; }
         public DbSet<BugTracker.Models.ProjectPriority> ProjectPriority { get; set; }
         public DbSet<BugTracker.Models.Ticket> Ticket { get; set; }
         public DbSet<BugTracker.Models.TicketAttachment> TicketAttachment { get; set; }

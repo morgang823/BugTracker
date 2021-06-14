@@ -59,7 +59,7 @@ namespace BugTracker.Models
         public virtual TicketPriority TicketPriority { get; set; }
 
         public virtual TicketStatus TicketStatus { get; set; }
-
+        
         public virtual BTUser OwnerUser { get; set; }
 
         public virtual BTUser DeveloperUser { get; set; }
@@ -71,8 +71,6 @@ namespace BugTracker.Models
         public virtual ICollection<Notification> Notifications { get; set; } = new HashSet<Notification>();
 
         public virtual ICollection<TicketHistory> History { get; set; } = new HashSet<TicketHistory>();
-
-
 
     }
 }

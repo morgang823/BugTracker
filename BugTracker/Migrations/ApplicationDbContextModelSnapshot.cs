@@ -218,7 +218,7 @@ namespace BugTracker.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("SenderID")
+                    b.Property<string>("SenderId")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -235,7 +235,7 @@ namespace BugTracker.Migrations
 
                     b.HasIndex("RecipientId");
 
-                    b.HasIndex("SenderID");
+                    b.HasIndex("SenderId");
 
                     b.HasIndex("TicketId");
 
@@ -252,7 +252,7 @@ namespace BugTracker.Migrations
                     b.Property<bool>("Archived")
                         .HasColumnType("boolean");
 
-                    b.Property<int?>("CompanyId")
+                    b.Property<int>("CompanyId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Description")
@@ -287,7 +287,7 @@ namespace BugTracker.Migrations
 
                     b.HasIndex("ProjectPriorityId");
 
-                    b.ToTable("Project");
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("BugTracker.Models.ProjectPriority", b =>
@@ -375,8 +375,8 @@ namespace BugTracker.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -448,8 +448,8 @@ namespace BugTracker.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -459,6 +459,9 @@ namespace BugTracker.Migrations
 
                     b.Property<string>("OldValue")
                         .HasColumnType("text");
+
+                    b.Property<int?>("ProjectId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Property")
                         .HasColumnType("text");
@@ -470,6 +473,8 @@ namespace BugTracker.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
 
                     b.HasIndex("TicketId");
 
@@ -718,7 +723,7 @@ namespace BugTracker.Migrations
 
                     b.HasOne("BugTracker.Models.BTUser", "Sender")
                         .WithMany()
-                        .HasForeignKey("SenderID")
+                        .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -738,8 +743,10 @@ namespace BugTracker.Migrations
             modelBuilder.Entity("BugTracker.Models.Project", b =>
                 {
                     b.HasOne("BugTracker.Models.Company", "Company")
-                        .WithMany("Project")
-                        .HasForeignKey("CompanyId");
+                        .WithMany("Projects")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BugTracker.Models.ProjectPriority", "ProjectPriority")
                         .WithMany()
@@ -835,6 +842,10 @@ namespace BugTracker.Migrations
 
             modelBuilder.Entity("BugTracker.Models.TicketHistory", b =>
                 {
+                    b.HasOne("BugTracker.Models.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId");
+
                     b.HasOne("BugTracker.Models.Ticket", "Ticket")
                         .WithMany("History")
                         .HasForeignKey("TicketId")
@@ -844,6 +855,8 @@ namespace BugTracker.Migrations
                     b.HasOne("BugTracker.Models.BTUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+
+                    b.Navigation("Project");
 
                     b.Navigation("Ticket");
 
@@ -907,7 +920,7 @@ namespace BugTracker.Migrations
 
                     b.Navigation("Members");
 
-                    b.Navigation("Project");
+                    b.Navigation("Projects");
                 });
 
             modelBuilder.Entity("BugTracker.Models.Project", b =>

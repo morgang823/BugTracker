@@ -70,7 +70,7 @@ namespace BugTracker.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["RecipientId"] = new SelectList(_context.Users, "Id", "Id", notification.RecipientId);
-            ViewData["SenderID"] = new SelectList(_context.Users, "Id", "Id", notification.SenderID);
+            ViewData["SenderID"] = new SelectList(_context.Users, "Id", "Id", notification.SenderId);
             ViewData["TicketId"] = new SelectList(_context.Set<Ticket>(), "Id", "Description", notification.TicketId);
             return View(notification);
         }
@@ -89,7 +89,7 @@ namespace BugTracker.Controllers
                 return NotFound();
             }
             ViewData["RecipientId"] = new SelectList(_context.Users, "Id", "Id", notification.RecipientId);
-            ViewData["SenderID"] = new SelectList(_context.Users, "Id", "Id", notification.SenderID);
+            ViewData["SenderID"] = new SelectList(_context.Users, "Id", "Id", notification.SenderId);
             ViewData["TicketId"] = new SelectList(_context.Set<Ticket>(), "Id", "Description", notification.TicketId);
             return View(notification);
         }
@@ -127,7 +127,7 @@ namespace BugTracker.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["RecipientId"] = new SelectList(_context.Users, "Id", "Id", notification.RecipientId);
-            ViewData["SenderID"] = new SelectList(_context.Users, "Id", "Id", notification.SenderID);
+            ViewData["SenderID"] = new SelectList(_context.Users, "Id", "Id", notification.SenderId);
             ViewData["TicketId"] = new SelectList(_context.Set<Ticket>(), "Id", "Description", notification.TicketId);
             return View(notification);
         }

@@ -27,7 +27,7 @@ namespace BugTracker.Models
         public string RecipientId { get; set; }
         [Required]
         [DisplayName("Sender")]
-        public string SenderID { get; set; }
+        public string SenderId { get; set; }
         [DisplayName("Has Been Viewed")]
 
         public bool Viewed { get; set; }

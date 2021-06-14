@@ -9,13 +9,15 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+
 <section class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">DataTable with default features</h3>
+                        <h3 class="card-title">Tickets Table</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -105,6 +107,9 @@
                                             @Html.DisplayFor(modelItem => item.DeveloperUser.LastName)
                                         </td>
                                         <td>
+                                            <a asp-route-ticketId="@item.Id" asp-action="AssignTicket">Assign A Ticket</a>
+                                        </td>
+                                        <td>
                                             <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                                             <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                                             <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
@@ -126,11 +131,12 @@
 </section>
 <!-- /.content -->
 <!-- Page specific script -->
-@section Scripts{ <script>
-    $(function () {
-        $('#example2').DataTable();
-    });
-</script>
+@section Scripts{
+    <script>
+        $(function () {
+            $('#example2').DataTable();
+        });
+    </script>
 }
 
 

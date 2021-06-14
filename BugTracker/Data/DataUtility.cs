@@ -214,8 +214,8 @@ namespace BugTracker.Data
                      }
                 };
 
-                var dbProject = context.Project.Select(c => c.Name).ToList();
-                await context.Project.AddRangeAsync(Project.Where(c => !dbProject.Contains(c.Name)));
+                var dbProject = context.Projects.Select(c => c.Name).ToList();
+                await context.Projects.AddRangeAsync(Project.Where(c => !dbProject.Contains(c.Name)));
                 context.SaveChanges();
             }
             catch (Exception ex)
@@ -757,9 +757,9 @@ namespace BugTracker.Data
         public static async Task SeedDefautTicketsAsync(ApplicationDbContext context)
         {
             //Get project Ids
-            int portfolioId = context.Project.FirstOrDefault(p => p.Name == "Build a Personal Porfolio").Id;
-            int blogId = context.Project.FirstOrDefault(p => p.Name == "Build a supplemental Blog Web Application").Id;
-            int bugtrackerId = context.Project.FirstOrDefault(p => p.Name == "Build an Issue Tracking Web Application").Id;
+            int portfolioId = context.Projects.FirstOrDefault(p => p.Name == "Build a Personal Porfolio").Id;
+            int blogId = context.Projects.FirstOrDefault(p => p.Name == "Build a supplemental Blog Web Application").Id;
+            int bugtrackerId = context.Projects.FirstOrDefault(p => p.Name == "Build an Issue Tracking Web Application").Id;
 
             //Get ticket type Ids
             int typeNewDev = context.TicketType.FirstOrDefault(p => p.Name == "New Development").Id;

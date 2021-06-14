@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,7 +45,13 @@ namespace BugTracker
             services.AddScoped<IBTRolesService, BTRolesService>();
             services.AddScoped<IBTProjectService, BTProjectService>();
             services.AddScoped<IBTTicketService, BTTicketService>();
+            services.AddScoped<IBTHistoryService, BTHistoryService>();
             services.AddScoped<IBTCompanyInfoService, BTCompanyInfoService>();
+            services.AddScoped<IEmailSender, GmailEmailService>();
+            services.AddScoped<IBTFileService, BTFileService>();
+            services.AddScoped<IBTNotificationService, BTNotificationsService>();
+
+
 
 
 
@@ -76,7 +83,7 @@ namespace BugTracker
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Landing}/{id?}");
                 endpoints.MapRazorPages();
             });
         }
