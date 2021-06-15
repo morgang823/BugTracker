@@ -25,7 +25,14 @@
 <section class="content">
     <form asp-action="Edit">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="DeveloperUser" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Created" />
+        <input type="hidden" asp-for="OwnerUserId" />
+        <input type="hidden" asp-for="DeveloperUserId" />
+        <input type="hidden" asp-for="Archived" />
+        <input type="hidden" asp-for="ArchiveDate" />
+        <input type="hidden" asp-for="ProjectId" />
+
 
         <div class="row">
             <div class="col-lg-6">
@@ -42,17 +49,7 @@
                         <div class="form-group">
                             <label asp-for="Description" class="form-control"></label>
                             <span asp-validation-for="Description" class="text-danger"></span>
-                            <textarea id="inputDescription" class="form-control bg-light text-dark" rows="4"></textarea>
-                        </div>
-                        <div class="form-group form-check">
-                            <label class="form-check-label">
-                                <input class="form-check-input" asp-for="Archived" /> @Html.DisplayNameFor(model => model.Archived)
-                            </label>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="ArchiveDate" class="control-label"></label>
-                            <input asp-for="ArchiveDate" class="form-control bg-light text-dark" />
-                            <span asp-validation-for="ArchiveDate" class="text-danger"></span>
+                            <textarea asp-for="Description" id="inputDescription" class="form-control bg-light text-dark" rows="4"></textarea>
                         </div>
                         <div class="form-group">
                             <label asp-for="ProjectId" class="control-label"></label>
@@ -73,11 +70,6 @@
                             <label asp-for="TicketStatusId" class="control-label"></label>
                             <select asp-for="TicketStatusId" class="form-control" asp-items="ViewBag.TicketStatusId"><option>Select a Status</option></select>
                             <span asp-validation-for="TicketStatusId" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="OwnerUserId" class="control-label"></label>
-                            <select asp-for="OwnerUserId" class="form-control" asp-items="ViewBag.OwnerUserId"></select>
-                            <span asp-validation-for="OwnerUserId" class="text-danger"></span>
                         </div>
                         <!-- /.card-body -->
                     </div>

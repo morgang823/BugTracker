@@ -25,7 +25,7 @@
 
     <!-- Main content -->
     <section class="content">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
                 <div class="col-lg-6">
@@ -48,7 +48,7 @@
                             <div class="form-group">
                                 <label asp-for="Description" class="form-control"></label>
                                 <span asp-validation-for="Description" class="text-danger"></span>
-                                <textarea id="inputDescription" class="form-control bg-light text-dark" rows="4"></textarea>
+                                <textarea asp-for="Description" id="inputDescription" class="form-control bg-light text-dark" rows="4"></textarea>
                             </div>
                             <div class="form-group">
                                 <label asp-for="StartDate" class="form-control"></label>

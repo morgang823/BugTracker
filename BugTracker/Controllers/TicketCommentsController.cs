@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using BugTracker.Data;
 using BugTracker.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using BugTracker.Services.Interfaces;
 
 namespace BugTracker.Controllers
 {
@@ -15,14 +17,18 @@ namespace BugTracker.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<BTUser> _userManager;
+        private readonly IBTHistoryService _historyService;
 
-        public TicketCommentsController(ApplicationDbContext context, UserManager<BTUser> userManager)
+        public TicketCommentsController(ApplicationDbContext context, UserManager<BTUser> userManager, IBTHistoryService historyService)
         {
             _context = context;
             _userManager = userManager;
+            _historyService = historyService;
         }
 
         // GET: TicketComments
+        [Authorize(Roles = "ProjectManager")]
+
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.TicketComment.Include(t => t.User);
@@ -49,6 +55,8 @@ namespace BugTracker.Controllers
         }
 
         // GET: TicketComments/Create
+        [Authorize]
+
         public IActionResult Create()
         {
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
@@ -60,6 +68,8 @@ namespace BugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
+
         public async Task<IActionResult> Create([Bind("Comment,TicketId")] TicketComment ticketComment)
         {
             if (ModelState.IsValid)
@@ -67,15 +77,38 @@ namespace BugTracker.Controllers
                ticketComment.Created = DateTime.Now;
                 ticketComment.UserId = _userManager.GetUserId(User);
 
+
+                Ticket oldTicket = await _context.Ticket
+                    .Include(t => t.TicketPriority)
+                    .Include(t => t.TicketStatus)
+                    .Include(t => t.TicketType)
+                    .Include(t => t.Project)
+                    .Include(t => t.DeveloperUser)
+                    .AsNoTracking().FirstOrDefaultAsync(t => t.Id == ticketComment.TicketId);
+
                 _context.Add(ticketComment);
+
+                Ticket newTicket = await _context.Ticket
+                    .Include(t => t.TicketPriority)
+                    .Include(t => t.TicketStatus)
+                    .Include(t => t.TicketType)
+                    .Include(t => t.Project)
+                    .Include(t => t.DeveloperUser)
+                    .AsNoTracking().FirstOrDefaultAsync(t => t.Id == ticketComment.TicketId);
+
+                await _historyService.AddHistoryAsync(oldTicket, newTicket, ticketComment.UserId);
+
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", "Tickets", new {id = ticketComment.TicketId});
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", ticketComment.UserId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "FullName", ticketComment.UserId);
             return RedirectToAction("Details", "Tickets", new { id = ticketComment.TicketId });
         }
 
         // GET: TicketComments/Edit/5
+        [Authorize(Roles = "Admin, ProjectManager")]
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -97,6 +130,8 @@ namespace BugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, ProjectManager")]
+
         public async Task<IActionResult> Edit(int id, [Bind("Id,Comment,Created,TicketId,UserId")] TicketComment ticketComment)
         {
             if (id != ticketComment.Id)
@@ -129,6 +164,8 @@ namespace BugTracker.Controllers
         }
 
         // GET: TicketComments/Delete/5
+        [Authorize(Roles = "Admin, ProjectManager")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -146,6 +183,7 @@ namespace BugTracker.Controllers
 
             return View(ticketComment);
         }
+        [Authorize(Roles = "Admin, ProjectManager")]
 
         // POST: TicketComments/Delete/5
         [HttpPost, ActionName("Delete")]

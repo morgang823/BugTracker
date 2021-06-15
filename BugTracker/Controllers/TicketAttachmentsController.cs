@@ -83,26 +83,6 @@ namespace BugTracker.Controllers
                 ticketAttachment.Created = DateTimeOffset.Now;
                 ticketAttachment.UserId = _userManager.GetUserId(User);
 
-                Ticket oldTicket = await _context.Ticket
-                    .Include(t => t.TicketPriority)
-                    .Include(t => t.TicketStatus)
-                    .Include(t => t.TicketType)
-                    .Include(t => t.Project)
-                    .Include(t => t.DeveloperUser)
-                    .AsNoTracking().FirstOrDefaultAsync(t => t.Id == ticketAttachment.Ticket.Id);
-
-
-                Ticket newTicket = await _context.Ticket
-                    .Include(t => t.TicketPriority)
-                    .Include(t => t.TicketStatus)
-                    .Include(t => t.TicketType)
-                    .Include(t => t.Project)
-                    .Include(t => t.DeveloperUser)
-                    .AsNoTracking().FirstOrDefaultAsync(t => t.Id == ticketAttachment.Ticket.Id);
-
-                await _historyService.AddHistoryAsync(oldTicket, newTicket, ticketAttachment.UserId);
-
-
 
                 _context.Add(ticketAttachment);
                 await _context.SaveChangesAsync();

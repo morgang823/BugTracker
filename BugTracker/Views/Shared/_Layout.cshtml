@@ -231,16 +231,16 @@
                                         <p>Company Info</p>
                                     </a>
                                 </li>
-                                @*@if (User.IsInRole("Administrator"))
-                                {*@
+                                @if (User.IsInRole("Admin"))
+                                {
                                     <li class="nav-item">
                                         <a class="nav-link text-white" asp-area="" asp-controller="UserRoles" asp-action="ManageUserRoles">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Manage User Roles</p>
                                         </a>
                                     </li>
-                                @*}*@
-                                @if ((User.IsInRole("Administrator")) || (User.IsInRole("ProjectManager")))
+                                }
+                                @if ((User.IsInRole("Admin")) || (User.IsInRole("ProjectManager")))
                                 {
 
                                     <li class="nav-item">
@@ -261,19 +261,22 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a class="nav-link text-white" asp-area="" asp-controller="Projects" asp-action="CompanyProjects">
-                                        <i class="fas fa-user-chart nav-icon"></i>
-                                        <p>All Projects</p>
-                                    </a>
-                                </li>
+                                @if ((User.IsInRole("Admin")) || (User.IsInRole("ProjectManager")))
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" asp-area="" asp-controller="Projects" asp-action="CompanyProjects">
+                                            <i class="fas fa-user-chart nav-icon"></i>
+                                            <p>All Projects</p>
+                                        </a>
+                                    </li>
+                                }
                                 <li class="nav-item">
                                     <a class="nav-link text-white" asp-area="" asp-controller="Projects" asp-action="MemberProjects">
                                         <i class="fas fa-user-chart nav-icon"></i>
                                         <p>Member Projects</p>
                                     </a>
                                 </li>
-                                @if ((User.IsInRole("Administrator")) || (User.IsInRole("ProjectManager")))
+                                @if ((User.IsInRole("Admin")) || (User.IsInRole("ProjectManager")))
                                 {
                                     <li class="nav-item">
                                         <a class="nav-link text-white" asp-area="" asp-controller="Projects" asp-action="Create">
@@ -293,28 +296,28 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a class="nav-link text-white" asp-area="" asp-controller="Tickets" asp-action="AllTickets">
-                                        <i class="fas fa-ticket-alt nav-icon"></i>
-                                        <p>All Tickets</p>
-                                    </a>
-                                </li>
+                                @if ((User.IsInRole("Admin")) || (User.IsInRole("ProjectManager")))
+                                {
+
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" asp-area="" asp-controller="Tickets" asp-action="AllTickets">
+                                            <i class="fas fa-ticket-alt nav-icon"></i>
+                                            <p>All Tickets</p>
+                                        </a>
+                                    </li>
+                                }
                                 <li class="nav-item">
                                     <a class="nav-link text-white" asp-area="" asp-controller="Tickets" asp-action="MyTickets">
                                         <i class="fas fa-ticket-alt nav-icon"></i>
                                         <p>My Tickets</p>
                                     </a>
                                 </li>
-                                @if ((User.IsInRole("Administrator")) || (User.IsInRole("ProjectManager")))
-                                {
-
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white" asp-area="" asp-controller="Tickets" asp-action="Create">
-                                            <i class="fas fa-plus-square nav-icon"></i>
-                                            <p>Create a Ticket</p>
-                                        </a>
-                                    </li>
-                                }
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Tickets" asp-action="Create">
+                                        <i class="fas fa-plus-square nav-icon"></i>
+                                        <p>Create a Ticket</p>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -349,8 +352,6 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="~/dist/js/adminlte.js"></script>
     <!-- PAGE PLUGINS -->
     <!-- jQuery Mapael -->
     <script src="~/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
@@ -362,10 +363,8 @@
     <!-- DataTables  & Plugins -->
     <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="~/dist/js/demo.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="~/dist/js/pages/dashboard2.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/dist/js/adminlte.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

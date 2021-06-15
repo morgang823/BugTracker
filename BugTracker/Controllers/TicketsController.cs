@@ -40,7 +40,8 @@ namespace BugTracker.Controllers
             _emailService = emailService;
         }
 
-        // GET: Tickets
+        // GET: All Tickets regardless of company
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Ticket.Include(t => t.DeveloperUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
@@ -48,7 +49,7 @@ namespace BugTracker.Controllers
         }
 
         //Get all tickets for a company
-        [Authorize]
+        [Authorize(Roles = "ProjectManager")]
         public async Task<IActionResult> AllTickets()
         {
             //Get CompanyID
@@ -74,9 +75,11 @@ namespace BugTracker.Controllers
             model.Developers = new SelectList(await _projectService.DevelopersOnProjectAsync(model.Ticket.ProjectId),"Id","FullName");
             return View(model);
         }
-
+        //POST
         [HttpPost]
         [AutoValidateAntiforgeryToken]
+        [Authorize(Roles = "ProjectManager")]
+
         public async Task<IActionResult> AssignTicket(AssignDeveloperViewModel viewModel)
         {
             if(!string.IsNullOrEmpty(viewModel.DeveloperId))
@@ -110,7 +113,7 @@ namespace BugTracker.Controllers
             }
             return RedirectToAction("Details", new { id = viewModel.Ticket.Id });
         }
-
+        [Authorize]
         public async Task<IActionResult> MyTickets()
         {
             //Get UserID
@@ -125,6 +128,7 @@ namespace BugTracker.Controllers
 
             return View(viewModel);
         }
+        [Authorize]
 
         public IActionResult ShowFile(int id)
         {
@@ -138,6 +142,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: Tickets/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -165,7 +170,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: Tickets/Create
-        [Authorize(Roles = "Admin, ProjectManager, Developer, Submitter")]
+        [Authorize(Roles = "ProjectManager, Developer, Submitter")]
 
         public async Task<IActionResult> Create()
         {
@@ -198,7 +203,7 @@ namespace BugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, ProjectManager, Developer, Submitter")]
+        [Authorize(Roles = "ProjectManager, Developer, Submitter")]
 
         public async Task<IActionResult> Create([Bind("Id,Title,Description,ProjectId,TicketTypeId,TicketPriorityId")] Ticket ticket)
         {
@@ -297,6 +302,8 @@ namespace BugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "ProjectManager, Developer, Submitter")]
+
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Created,Updated,Archived,ArchiveDate,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,DeveloperUserId")] Ticket ticket)
         {
             if (id != ticket.Id)
@@ -371,6 +378,8 @@ namespace BugTracker.Controllers
         }
 
         // GET: Tickets/Delete/5
+        [Authorize(Roles = "ProjectManager")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -393,6 +402,7 @@ namespace BugTracker.Controllers
 
             return View(ticket);
         }
+        [Authorize(Roles = "ProjectManager")]
 
         // POST: Tickets/Delete/5
         [HttpPost, ActionName("Delete")]

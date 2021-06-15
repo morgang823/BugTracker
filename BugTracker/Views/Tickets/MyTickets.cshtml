@@ -21,7 +21,7 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table id="example2" class="table table-bordered table-striped">
+                        <table id="subtickets" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>Title</th>
@@ -31,6 +31,7 @@
                                     <th>Description</th>
                                     <th>Type</th>
                                     <th>Priority</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -63,8 +64,11 @@
         <!-- /.row -->
     </div>
     <!-- /.container-fluid -->
-<br />
-<h1> Developer Tickets</h1>
+    <br />
+
+    @if (User.IsInRole("Developer"))
+    {
+    <h1> Developer Tickets</h1>
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
@@ -84,6 +88,7 @@
                                     <th>Description</th>
                                     <th>Type</th>
                                     <th>Priority</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -116,13 +121,14 @@
         <!-- /.row -->
     </div>
     <!-- /.container-fluid -->
+    }
 </section>
 <!-- /.content -->
 
 @section Scripts{
     <script>
         $(function () {
-            $('#example2').DataTable();
+            $('#devtickets').DataTable();
         });
         $(function () {
             $('#subtickets').DataTable();

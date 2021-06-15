@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BugTracker.Data;
 using BugTracker.Models;
+using BugTracker.Services.Interfaces;
+using BugTracker.Extensions;
 
 namespace BugTracker.Controllers
 {
     public class CompaniesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IBTCompanyInfoService _infoService;
 
-        public CompaniesController(ApplicationDbContext context)
+
+        public CompaniesController(ApplicationDbContext context, IBTCompanyInfoService infoService)
         {
             _context = context;
+            _infoService = infoService;
         }
 
         // GET: Companies
@@ -28,6 +33,8 @@ namespace BugTracker.Controllers
         // GET: Companies/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            int companyId = User.Identity.GetCompanyId().Value;
+            id = companyId;   
             if (id == null)
             {
                 return NotFound();
