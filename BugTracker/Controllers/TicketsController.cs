@@ -14,6 +14,7 @@ using BugTracker.Models.ViewModels;
 using BugTracker.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BugTracker.Controllers
 {
@@ -47,6 +48,7 @@ namespace BugTracker.Controllers
         }
 
         //Get all tickets for a company
+        [Authorize]
         public async Task<IActionResult> AllTickets()
         {
             //Get CompanyID
@@ -56,6 +58,8 @@ namespace BugTracker.Controllers
         }
         //Get
         [HttpGet]
+        [Authorize(Roles = "ProjectManager")]
+
         public async Task<IActionResult> AssignTicket(int? ticketId)
         {
             if(!ticketId.HasValue)
@@ -161,6 +165,8 @@ namespace BugTracker.Controllers
         }
 
         // GET: Tickets/Create
+        [Authorize(Roles = "Admin, ProjectManager, Developer, Submitter")]
+
         public async Task<IActionResult> Create()
         {
             //get current user
@@ -192,6 +198,8 @@ namespace BugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, ProjectManager, Developer, Submitter")]
+
         public async Task<IActionResult> Create([Bind("Id,Title,Description,ProjectId,TicketTypeId,TicketPriorityId")] Ticket ticket)
         {
             if (ModelState.IsValid)
@@ -256,8 +264,15 @@ namespace BugTracker.Controllers
                 return View(ticket);
         }
         // GET: Tickets/Edit/5
+        [Authorize(Roles = "ProjectManager, Developer, Submitter")]
+
         public async Task<IActionResult> Edit(int? id)
         {
+            //get current user
+            BTUser user = await _userManager.GetUserAsync(User);
+            var role = await _userManager.GetRolesAsync(user);
+
+            
             if (id == null)
             {
                 return NotFound();

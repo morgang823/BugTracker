@@ -231,12 +231,15 @@
                                         <p>Company Info</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-white" asp-area="" asp-controller="UserRoles" asp-action="ManageUserRoles">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Manage User Roles</p>
-                                    </a>
-                                </li>
+                                @*@if (User.IsInRole("Administrator"))
+                                {*@
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" asp-area="" asp-controller="UserRoles" asp-action="ManageUserRoles">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Manage User Roles</p>
+                                        </a>
+                                    </li>
+                                @*}*@
                                 @if ((User.IsInRole("Administrator")) || (User.IsInRole("ProjectManager")))
                                 {
 

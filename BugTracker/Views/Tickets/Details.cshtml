@@ -112,7 +112,7 @@
                         <br>
                         <div class="text-white">
                             <p class="text-lg">
-                                Company: @Html.DisplayFor(model => model.Project.Company.Id)
+                                Company: @Html.DisplayFor(model => model.Project.Company.Name)
                                 <b class="d-block">Project: @Html.DisplayFor(model => model.Project.Name)</b>
                             </p>
                             <p class="text-lg">
@@ -123,9 +123,8 @@
                                 Ticket Devloper
                                 <b class="d-block">@Html.DisplayFor(model => model.DeveloperUser.FullName)</b>
                             </p>
-
+                            <a asp-route-ticketId="@Model.Id" asp-action="AssignTicket">Assign A Ticket</a>
                         </div>
-
                         <h5 class="mt-5 text-white">Ticket Attachments</h5><hr />
                         <div class="row clearfix">
                             @foreach (TicketAttachment item in Model.Attachments)

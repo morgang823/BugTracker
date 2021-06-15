@@ -9,6 +9,7 @@ using BugTracker.Data;
 using BugTracker.Models;
 using System.IO;
 using Microsoft.AspNetCore.Identity;
+using BugTracker.Services.Interfaces;
 
 namespace BugTracker.Controllers
 {
@@ -16,11 +17,17 @@ namespace BugTracker.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<BTUser> _userManager;
+        private readonly IBTHistoryService _historyService;
+        private readonly IBTTicketService _ticketService;
 
-        public TicketAttachmentsController(ApplicationDbContext context, UserManager<BTUser> userManager)
+
+
+        public TicketAttachmentsController(ApplicationDbContext context, UserManager<BTUser> userManager, IBTHistoryService historyService, IBTTicketService ticketService)
         {
             _context = context;
             _userManager = userManager;
+            _historyService = historyService;
+            _ticketService = ticketService;
         }
 
         // GET: TicketAttachments
@@ -75,6 +82,26 @@ namespace BugTracker.Controllers
                 ticketAttachment.FileName = ticketAttachment.FormFile.FileName;
                 ticketAttachment.Created = DateTimeOffset.Now;
                 ticketAttachment.UserId = _userManager.GetUserId(User);
+
+                Ticket oldTicket = await _context.Ticket
+                    .Include(t => t.TicketPriority)
+                    .Include(t => t.TicketStatus)
+                    .Include(t => t.TicketType)
+                    .Include(t => t.Project)
+                    .Include(t => t.DeveloperUser)
+                    .AsNoTracking().FirstOrDefaultAsync(t => t.Id == ticketAttachment.Ticket.Id);
+
+
+                Ticket newTicket = await _context.Ticket
+                    .Include(t => t.TicketPriority)
+                    .Include(t => t.TicketStatus)
+                    .Include(t => t.TicketType)
+                    .Include(t => t.Project)
+                    .Include(t => t.DeveloperUser)
+                    .AsNoTracking().FirstOrDefaultAsync(t => t.Id == ticketAttachment.Ticket.Id);
+
+                await _historyService.AddHistoryAsync(oldTicket, newTicket, ticketAttachment.UserId);
+
 
 
                 _context.Add(ticketAttachment);

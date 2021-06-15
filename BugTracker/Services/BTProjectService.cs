@@ -102,7 +102,19 @@ namespace BugTracker.Services
 
         public async Task<List<BTUser>> DevelopersOnProjectAsync(int projectId)
         {
-            return await GetProjectMembersByRoleAsync(projectId, "Developer");
+            Project project = await _context.Projects
+                .Include(p => p.Members)
+                .FirstOrDefaultAsync(u => u.Id == projectId);
+
+                List<BTUser> developers = new();
+            foreach(var user in project.Members)
+            {
+                if(await _rolesService.IsUserInRoleAsync(user, "Developer"))
+                {
+                    developers.Add(user);
+                }
+            }
+            return developers;
         }
 
         public async Task<List<Project>> GetAllProjectsByCompanyAsync(int companyId)
