@@ -106,10 +106,10 @@
                                             @Html.DisplayFor(modelItem => item.DeveloperUser.FirstName)
                                             @Html.DisplayFor(modelItem => item.DeveloperUser.LastName)
                                         </td>
-                                        <td>
-                                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                        <td class="btn-group btn-success text-white btn-outline-dark">
+                                            <a class="text-dark font-weight-bold" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                            <a class="text-dark font-weight-bold" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                            <a class="text-dark font-weight-bold" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                                         </td>
                                     </tr>
                                 }

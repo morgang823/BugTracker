@@ -198,7 +198,7 @@
                     <!-- STACKED BAR CHART -->
                     <div class="card card-success">
                         <div class="card-header">
-                            <h3 class="card-title">Tickets Per Project</h3>
+                            <h3 class="card-title">Tickets By Type</h3>
                         </div>
                         <div class="card-body">
                             <div class="chart">
@@ -574,21 +574,17 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <table id="example2" class="table table-bordered table-striped">
+                                <table id="dashTable" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             <th>Title</th>
                                             <th>Description</th>
                                             <th>Created</th>
-                                            <th>Updated</th>
-                                            <th>Archived</th>
-                                            <th>Archived Date</th>
                                             <th>Project</th>
-                                            <th>Ticket Type</th>
                                             <th>Ticket Priority</th>
                                             <th>Ticket Status</th>
-                                            <th>Owner user</th>
-                                            <th>Developer user</th>
+                                            <th>Actions</th>
+                                            
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -605,19 +601,7 @@
                                                     @Html.DisplayFor(modelItem => item.Created)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Updated)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Archived)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.ArchiveDate)
-                                                </td>
-                                                <td>
                                                     @Html.DisplayFor(modelItem => item.Project.Name)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.TicketType.Name)
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.TicketPriority.Name)
@@ -625,19 +609,10 @@
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.TicketStatus.Name)
                                                 </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.OwnerUser.FirstName)
-                                                    @Html.DisplayFor(modelItem => item.OwnerUser.LastName)
-
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.DeveloperUser.FirstName)
-                                                    @Html.DisplayFor(modelItem => item.DeveloperUser.LastName)
-                                                </td>
-                                                <td>
-                                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                                <td class="btn-group btn-success text-white btn-outline-dark">
+                                                    <a class="text-dark font-weight-bold" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                                    <a class="text-dark font-weight-bold" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                                    <a class="text-dark font-weight-bold" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                                                 </td>
                                             </tr>
                                         }
@@ -908,7 +883,7 @@
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ["Tickets by Typoe"],
+                labels: ["Tickets by Type"],
                 datasets: [{
                     data: [@Model.NewDev],
                     label: "New development",
@@ -942,7 +917,7 @@
 
         <script>
             $(function () {
-                $('#example2').DataTable();
+                $('#dashTable').DataTable();
             });
         </script>
     }

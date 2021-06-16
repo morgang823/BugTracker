@@ -64,22 +64,23 @@
                         </div>
 
                         <h3 class="profile-username text-center">
-                            @Html.DisplayNameFor(model => model.Name)
+                            @Html.DisplayFor(model => model.Name)
                         </h3>
 
                         <p class="text-muted text-center">
-                            @Html.DisplayNameFor(model => model.Description)
+                            @Html.DisplayFor(model => model.Description)
                         </p>
 
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
-                                <b>Total Projects</b> @Model.Projects.Count
+                                <b>Total Projects</b> @Html.DisplayFor(model => model.Projects.Count)
+
                             </li>
                             <li class="list-group-item">
-                                <b>Total Tickets</b> @Model.Tickets.Count
+                                <b>Total Tickets</b> @Html.DisplayFor(model => model.Tickets.Count)
                             </li>
                             <li class="list-group-item">
-                                <b>Members</b> @Model.Members.Count
+                                <b>Members</b> @Html.DisplayFor(model => model.Members.Count)
                             </li>
                         </ul>
                     </div>
