@@ -272,7 +272,7 @@ namespace BugTracker.Controllers
                 #endregion
                 {
 
-                    return RedirectToAction("Details", "Ticket", new { id = ticket.ProjectId });
+                    return RedirectToAction("Details", "Tickets", new { id = ticket.Id });
                 }
             }
                 ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "FullName", ticket.DeveloperUserId);

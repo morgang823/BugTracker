@@ -22,6 +22,7 @@ namespace BugTracker.Controllers
         private readonly IBTProjectService _projectService;
         private readonly IBTTicketService _ticketService;
         private readonly IBTRolesService _roleService;
+        private readonly IBTImageService _imageService;
 
         public HomeController(ILogger<HomeController> logger, UserManager<BTUser> userManager, IBTCompanyInfoService infoService, IBTProjectService projectService, IBTTicketService ticketService, IBTRolesService roleService)
         {
@@ -52,6 +53,7 @@ namespace BugTracker.Controllers
             {
                 Projects = await _projectService.GetAllProjectsByCompanyAsync(companyId),
                 Tickets = await _ticketService.GetAllTicketsByCompanyAsync(companyId),
+                PMTickets = await _ticketService.GetAllPMTicketsAsync(user.Id),
                 DevTickets = await _ticketService.GetAllTicketsByRoleAsync("Developer", user.Id),
                 SubmittedTickets = await _ticketService.GetAllTicketsByRoleAsync("Submitter", user.Id),
                 Members = await _infoService.GetAllMembersAsync(companyId),

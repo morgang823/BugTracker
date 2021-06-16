@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using BugTracker.Models;
+using BugTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,13 +15,15 @@ namespace BugTracker.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<BTUser> _userManager;
         private readonly SignInManager<BTUser> _signInManager;
+        private readonly IBTImageService BTImageService;
 
         public IndexModel(
             UserManager<BTUser> userManager,
-            SignInManager<BTUser> signInManager)
+            SignInManager<BTUser> signInManager, IBTImageService bTImageService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            BTImageService = bTImageService;
         }
 
         public string Username { get; set; }
@@ -31,23 +34,22 @@ namespace BugTracker.Areas.Identity.Pages.Account.Manage
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public class InputModel
+        public class InputModel : BTUser
         {
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+
         }
 
         private async Task LoadAsync(BTUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
             Username = userName;
 
-            Input = new InputModel
+            user.AvatarFormFile = BTImageService.DecodeImage(user.AvatarFileData, user.AvatarContentType);
+            user = new BTUser
             {
-                PhoneNumber = phoneNumber
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            AvatarFormFile = user.AvatarFormFile
             };
         }
 

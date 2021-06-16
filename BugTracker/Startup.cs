@@ -50,6 +50,7 @@ namespace BugTracker
             services.AddScoped<IEmailSender, GmailEmailService>();
             services.AddScoped<IBTFileService, BTFileService>();
             services.AddScoped<IBTNotificationService, BTNotificationsService>();
+            services.AddScoped<IBTImageService, BTImageService>();
 
 
 

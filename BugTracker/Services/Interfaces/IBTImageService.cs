@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BugTracker.Services.Interfaces
 {
-    interface IBTImageService
+   public interface IBTImageService
     {
         //encode an image from an upload control
         Task<byte[]> EncodeFileAsync(IFormFile file);
