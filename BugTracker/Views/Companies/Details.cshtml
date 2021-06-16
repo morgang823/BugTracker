@@ -1,4 +1,5 @@
 ﻿@model BugTracker.Models.Company
+@using BugTracker.Services
 
 @{
     ViewData["Title"] = "Details";
@@ -72,17 +73,15 @@
 
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
-                                <b>Total Projects</b> 
+                                <b>Total Projects</b> @Model.Projects.Count
                             </li>
                             <li class="list-group-item">
-                                <b>Total Tickets</b> <a class="float-right">543</a>
+                                <b>Total Tickets</b> @Model.Tickets.Count
                             </li>
                             <li class="list-group-item">
-                                <b>Members</b> <a class="float-right">13,287</a>
+                                <b>Members</b> @Model.Members.Count
                             </li>
                         </ul>
-
-                        <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -92,7 +91,7 @@
             <!-- /.col -->
             <div class="col-md-9">
                 <div class="card">
-                    <div class="card-header p-2">
+                    <div class="card-header p-2 bg-green">
                         <ul class="nav nav-pills">
                             <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Activity</a></li>
                             <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a></li>

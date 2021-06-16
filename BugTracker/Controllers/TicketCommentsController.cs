@@ -22,12 +22,13 @@ namespace BugTracker.Controllers
         private readonly IBTNotificationService _notificationService;
 
 
-        public TicketCommentsController(ApplicationDbContext context, UserManager<BTUser> userManager, IBTHistoryService historyService, IBTTicketService ticketService)
+        public TicketCommentsController(ApplicationDbContext context, UserManager<BTUser> userManager, IBTHistoryService historyService, IBTTicketService ticketService, IBTNotificationService notificationService)
         {
             _context = context;
             _userManager = userManager;
             _historyService = historyService;
             _ticketService = ticketService;
+            _notificationService = notificationService;
         }
 
         // GET: TicketComments
