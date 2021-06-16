@@ -10,24 +10,28 @@ using BugTracker.Models;
 using System.IO;
 using Microsoft.AspNetCore.Identity;
 using BugTracker.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BugTracker.Controllers
 {
+    [Authorize]
     public class TicketAttachmentsController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<BTUser> _userManager;
         private readonly IBTHistoryService _historyService;
         private readonly IBTTicketService _ticketService;
+        private readonly IBTNotificationService _notificationService;
 
 
 
-        public TicketAttachmentsController(ApplicationDbContext context, UserManager<BTUser> userManager, IBTHistoryService historyService, IBTTicketService ticketService)
+        public TicketAttachmentsController(ApplicationDbContext context, UserManager<BTUser> userManager, IBTHistoryService historyService, IBTTicketService ticketService, IBTNotificationService notificationService)
         {
             _context = context;
             _userManager = userManager;
             _historyService = historyService;
             _ticketService = ticketService;
+            _notificationService = notificationService;
         }
 
         // GET: TicketAttachments
@@ -84,9 +88,46 @@ namespace BugTracker.Controllers
                 ticketAttachment.UserId = _userManager.GetUserId(User);
 
 
+                Ticket oldTicket = await _context.Ticket
+                                    .Include(t => t.TicketPriority)
+                                    .Include(t => t.TicketStatus)
+                                    .Include(t => t.TicketType)
+                                    .Include(t => t.Project)
+                                    .Include(t => t.DeveloperUser)
+                                    .AsNoTracking().FirstOrDefaultAsync(t => t.Id == ticketAttachment.TicketId);
+
                 _context.Add(ticketAttachment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+
+                Ticket newTicket = await _context.Ticket
+                    .Include(t => t.TicketPriority)
+                    .Include(t => t.TicketStatus)
+                    .Include(t => t.TicketType)
+                    .Include(t => t.Project)
+                    .Include(t => t.DeveloperUser)
+                    .AsNoTracking().FirstOrDefaultAsync(t => t.Id == ticketAttachment.TicketId);
+
+                await _historyService.AddHistoryAsync(oldTicket, newTicket, ticketAttachment.UserId);
+                Notification notification = new()
+                {
+                    TicketId = newTicket.Id,
+                    Title = "An Attachment Has Been Added To This Ticket",
+                    Message = $"Ticket: {newTicket?.Title}, Attachment Added By {ticketAttachment.User?.FullName}",
+                    Created = DateTimeOffset.Now,
+                    SenderId = ticketAttachment.User?.Id,
+                    RecipientId = ticketAttachment.Ticket.DeveloperUserId,
+                };
+
+
+                if (ticketAttachment.Ticket.DeveloperUserId != null)
+                {
+                    await _notificationService.SaveNotificationAsync(notification);
+                    await _notificationService.EmailNotificationAsync(notification, "message has been sent.");
+                }
+
+
+                return RedirectToAction("Details", "Tickets", new { id = ticketAttachment.TicketId });
             }
             ViewData["TicketId"] = new SelectList(_context.Ticket, "Id", "Description", ticketAttachment.TicketId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", ticketAttachment.UserId);

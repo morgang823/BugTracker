@@ -18,12 +18,16 @@ namespace BugTracker.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<BTUser> _userManager;
         private readonly IBTHistoryService _historyService;
+        private readonly IBTTicketService _ticketService;
+        private readonly IBTNotificationService _notificationService;
 
-        public TicketCommentsController(ApplicationDbContext context, UserManager<BTUser> userManager, IBTHistoryService historyService)
+
+        public TicketCommentsController(ApplicationDbContext context, UserManager<BTUser> userManager, IBTHistoryService historyService, IBTTicketService ticketService)
         {
             _context = context;
             _userManager = userManager;
             _historyService = historyService;
+            _ticketService = ticketService;
         }
 
         // GET: TicketComments
@@ -74,7 +78,7 @@ namespace BugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-               ticketComment.Created = DateTime.Now;
+                ticketComment.Created = DateTime.Now;
                 ticketComment.UserId = _userManager.GetUserId(User);
 
 
@@ -87,6 +91,7 @@ namespace BugTracker.Controllers
                     .AsNoTracking().FirstOrDefaultAsync(t => t.Id == ticketComment.TicketId);
 
                 _context.Add(ticketComment);
+                await _context.SaveChangesAsync();
 
                 Ticket newTicket = await _context.Ticket
                     .Include(t => t.TicketPriority)
@@ -97,10 +102,23 @@ namespace BugTracker.Controllers
                     .AsNoTracking().FirstOrDefaultAsync(t => t.Id == ticketComment.TicketId);
 
                 await _historyService.AddHistoryAsync(oldTicket, newTicket, ticketComment.UserId);
+                Notification notification = new()
+                {
+                    TicketId = newTicket.Id,
+                    Title = "Comment Made On This Ticket",
+                    Message = $"Ticket: {newTicket?.Title}, Comment Made By {ticketComment.User?.FullName}",
+                    Created = DateTimeOffset.Now,
+                    SenderId = ticketComment.User?.Id,
+                    RecipientId = newTicket.DeveloperUserId,
+                };
 
 
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "Tickets", new {id = ticketComment.TicketId});
+                if (newTicket.DeveloperUserId != null)
+                {
+                    await _notificationService.SaveNotificationAsync(notification);
+                    await _notificationService.EmailNotificationAsync(notification, "message has been sent.");
+                }
+
             }
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "FullName", ticketComment.UserId);
             return RedirectToAction("Details", "Tickets", new { id = ticketComment.TicketId });

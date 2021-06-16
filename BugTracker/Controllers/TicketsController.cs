@@ -87,7 +87,6 @@ namespace BugTracker.Controllers
                 int companyId = User.Identity.GetCompanyId().Value;
 
                 BTUser user = await _userManager.GetUserAsync(User);
-                BTUser developer = (await _infoService.GetAllMembersAsync(companyId)).FirstOrDefault(m => m.Id == viewModel.DeveloperId);
                 BTUser projectManager = await _projectService.GetProjectManagerAsync(viewModel.Ticket.ProjectId);
 
                 Ticket oldTicket = await _context.Ticket
@@ -109,6 +108,22 @@ namespace BugTracker.Controllers
                     .AsNoTracking().FirstOrDefaultAsync(t => t.Id == viewModel.Ticket.Id);
 
                 await _historyService.AddHistoryAsync(oldTicket, newTicket, user.Id);
+                Notification notification = new()
+                {
+                    TicketId = newTicket.Id,
+                    Title = "You've Been Assigned A Ticket",
+                    Message = $"New Ticket{newTicket?.Title} was Assigned By {user?.FullName}",
+                    Created = DateTimeOffset.Now,
+                    SenderId = user?.Id,
+                    RecipientId = viewModel.DeveloperId,
+                };
+
+
+                if (viewModel.DeveloperId != null)
+                {
+                    await _notificationService.SaveNotificationAsync(notification);
+                    await _notificationService.EmailNotificationAsync(notification, "message has been sent.");
+                }
 
             }
             return RedirectToAction("Details", new { id = viewModel.Ticket.Id });
@@ -234,7 +249,6 @@ namespace BugTracker.Controllers
 
                 BTUser projectManager = await _projectService.GetProjectManagerAsync(ticket.ProjectId);
                 int companyId = User.Identity.GetCompanyId().Value;
-
                 Notification notification = new()
                 {
                     TicketId = ticket.Id,
@@ -254,10 +268,11 @@ namespace BugTracker.Controllers
                 {
                     await _notificationService.AdminsNotificationAsync(notification, companyId);
                 }
+                
                 #endregion
                 {
 
-                    return RedirectToAction("Details", "Projects", new { id = ticket.ProjectId });
+                    return RedirectToAction("Details", "Ticket", new { id = ticket.ProjectId });
                 }
             }
                 ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "FullName", ticket.DeveloperUserId);
@@ -358,12 +373,15 @@ namespace BugTracker.Controllers
                     {
                         TicketId = ticket.Id,
                         Title = "A ticket assigned to you has been modified",
-                        Message = $"New Ticket{ticket?.Title} was created by {btUser?.FullName}",
+                        Message = $"New Ticket{ticket?.Title} was edited by {btUser?.FullName}",
                         Created = DateTimeOffset.Now,
                         SenderId = btUser?.Id,
                         RecipientId = projectManager?.Id,
                     };
+
                     await _notificationService.SaveNotificationAsync(notification);
+                    await _notificationService.EmailNotificationAsync(notification, "message has been sent.");
+
 
                 }
                 return RedirectToAction(nameof(Index));

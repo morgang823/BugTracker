@@ -36,19 +36,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Companies" asp-action="Index">Companies</a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Projects" asp-action="Index">Projects</a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Tickets" asp-action="Index">Tickets</a>
+                    <a class="nav-link btn btn-success text-white" asp-area="" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a class="nav-link text-white" href="javascript:documnet.getElementById('logoutForm').submit();">
@@ -261,7 +249,7 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                                @if ((User.IsInRole("Admin")) || (User.IsInRole("ProjectManager")))
+                                @if (User.IsInRole("Admin"))
                                 {
                                     <li class="nav-item">
                                         <a class="nav-link text-white" asp-area="" asp-controller="Projects" asp-action="CompanyProjects">

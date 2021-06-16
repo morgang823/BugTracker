@@ -45,10 +45,10 @@
                                         <td>@ticket.Description</td>
                                         <td>@ticket.TicketType.Name</td>
                                         <td>@ticket.TicketPriority.Name</td>
-                                        <td>
-                                            <a asp-action="Edit" asp-route-id="@ticket.Id">Edit</a> |
-                                            <a asp-action="Details" asp-route-id="@ticket.Id">Details</a> |
-                                            <a asp-action="Delete" asp-route-id="@ticket.Id">Delete</a>
+                                        <td class="btn-group btn-success text-white btn-outline-dark">
+                                            <a class="text-dark font-weight-bold" asp-action="Edit" asp-route-id="@ticket.Id">Edit</a> |
+                                            <a class="text-dark font-weight-bold" asp-action="Details" asp-route-id="@ticket.Id">Details</a> |
+                                            <a class="text-dark font-weight-bold" asp-action="Delete" asp-route-id="@ticket.Id">Delete</a>
                                         </td>
                                     </tr>
                                 }
@@ -102,10 +102,10 @@
                                         <td>@ticket.Description</td>
                                         <td>@ticket.TicketType.Name</td>
                                         <td>@ticket.TicketPriority.Name</td>
-                                        <td>
-                                            <a asp-action="Edit" asp-route-id="@ticket.Id">Edit</a> |
-                                            <a asp-action="Details" asp-route-id="@ticket.Id">Details</a> |
-                                            <a asp-action="Delete" asp-route-id="@ticket.Id">Delete</a>
+                                        <td class="btn-group btn-success text-white btn-outline-dark">
+                                            <a class="text-dark font-weight-bold" asp-action="Edit" asp-route-id="@ticket.Id">Edit</a> |
+                                            <a class="text-dark font-weight-bold" asp-action="Details" asp-route-id="@ticket.Id">Details</a> |
+                                            <a class="text-dark font-weight-bold" asp-action="Delete" asp-route-id="@ticket.Id">Delete</a>
                                         </td>
                                     </tr>
                                 }
