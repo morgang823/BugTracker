@@ -39,14 +39,14 @@ namespace BugTracker.Areas.Identity.Pages.Account.Manage
         {
             [Display(Name = "Custom Image")]
             public IFormFile ImageData { get; set; }
-
-            public byte[] ProfilePic { get; set; }
         }
 
         private async Task LoadAsync(BTUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             Username = userName;
+            string contentType = user.AvatarContentType;
+
             user = new BTUser
             {
             FirstName = user.FirstName,
@@ -81,15 +81,12 @@ namespace BugTracker.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            if (user.AvatarFormFile is null)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
-                    return RedirectToPage();
-                }
+                user.AvatarFileData = await BTImageService.EncodeFileAsync(user.AvatarFormFile);
+                user.AvatarContentType = BTImageService.ContentType(user.AvatarFormFile);
+
+                await _userManager.UpdateAsync(user);
             }
 
             await _signInManager.RefreshSignInAsync(user);

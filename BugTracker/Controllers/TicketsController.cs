@@ -112,7 +112,7 @@ namespace BugTracker.Controllers
                 {
                     TicketId = newTicket.Id,
                     Title = "You've Been Assigned A Ticket",
-                    Message = $"New Ticket{newTicket?.Title} was Assigned By {user?.FullName}",
+                    Message = $"New Ticket: {newTicket?.Title} was Assigned To You By {user?.FullName}",
                     Created = DateTimeOffset.Now,
                     SenderId = user?.Id,
                     RecipientId = viewModel.DeveloperId,

@@ -5,9 +5,10 @@
 }
 
 <h1>My Tickets</h1>
+<a href="C:\Users\morga\OneDrive\Desktop\code\BugTracker\BugTracker\Views\Tickets\MyTickets.cshtml">C:\Users\morga\OneDrive\Desktop\code\BugTracker\BugTracker\Views\Tickets\MyTickets.cshtml</a>
 
-<p>
-    <a asp-action="Create">Create New</a>
+<p class="btn btn-success text-white">
+    <a class="text-white" asp-action="Create">Create New</a>
 </p>
 
 <h1> Submitted Tickets</h1>
@@ -47,8 +48,7 @@
                                         <td>@ticket.TicketPriority.Name</td>
                                         <td class="btn-group btn-success text-white btn-outline-dark">
                                             <a class="text-dark font-weight-bold" asp-action="Edit" asp-route-id="@ticket.Id">Edit</a> |
-                                            <a class="text-dark font-weight-bold" asp-action="Details" asp-route-id="@ticket.Id">Details</a> |
-                                            <a class="text-dark font-weight-bold" asp-action="Delete" asp-route-id="@ticket.Id">Delete</a>
+                                            <a class="text-dark font-weight-bold" asp-action="Details" asp-route-id="@ticket.Id">Details</a>
                                         </td>
                                     </tr>
                                 }
@@ -68,59 +68,57 @@
 
     @if (User.IsInRole("Developer"))
     {
-    <h1> Developer Tickets</h1>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Developer Tickets Data Table</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <table id="devtickets" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Created</th>
-                                    <th>Developer</th>
-                                    <th>Submitter</th>
-                                    <th>Description</th>
-                                    <th>Type</th>
-                                    <th>Priority</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var ticket in Model.DevTickets)
-                                {
+        <h1> Developer Tickets</h1>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Developer Tickets Data Table</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="devtickets" class="table table-bordered table-striped">
+                                <thead>
                                     <tr>
-                                        <td>@ticket.Title</td>
-                                        <td>@ticket.Created</td>
-                                        <td>@ticket.DeveloperUser?.FullName</td>
-                                        <td>@ticket.OwnerUser?.FullName</td>
-                                        <td>@ticket.Description</td>
-                                        <td>@ticket.TicketType.Name</td>
-                                        <td>@ticket.TicketPriority.Name</td>
-                                        <td class="btn-group btn-success text-white btn-outline-dark">
-                                            <a class="text-dark font-weight-bold" asp-action="Edit" asp-route-id="@ticket.Id">Edit</a> |
-                                            <a class="text-dark font-weight-bold" asp-action="Details" asp-route-id="@ticket.Id">Details</a> |
-                                            <a class="text-dark font-weight-bold" asp-action="Delete" asp-route-id="@ticket.Id">Delete</a>
-                                        </td>
+                                        <th>Title</th>
+                                        <th>Created</th>
+                                        <th>Developer</th>
+                                        <th>Submitter</th>
+                                        <th>Description</th>
+                                        <th>Type</th>
+                                        <th>Priority</th>
+                                        <th>Action</th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach (var ticket in Model.DevTickets)
+                                    {
+                                        <tr>
+                                            <td>@ticket.Title</td>
+                                            <td>@ticket.Created</td>
+                                            <td>@ticket.DeveloperUser?.FullName</td>
+                                            <td>@ticket.OwnerUser?.FullName</td>
+                                            <td>@ticket.Description</td>
+                                            <td>@ticket.TicketType.Name</td>
+                                            <td>@ticket.TicketPriority.Name</td>
+                                            <td class="btn-group btn-success text-white btn-outline-dark">
+                                                <a class="text-dark font-weight-bold" asp-action="Edit" asp-route-id="@ticket.Id">Edit</a> |
+                                                <a class="text-dark font-weight-bold" asp-action="Details" asp-route-id="@ticket.Id">Details</a>                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card-body -->
+                    <!-- /.card -->
                 </div>
-                <!-- /.card -->
+                <!-- /.col -->
             </div>
-            <!-- /.col -->
+            <!-- /.row -->
         </div>
-        <!-- /.row -->
-    </div>
-    <!-- /.container-fluid -->
+        <!-- /.container-fluid -->
     }
 </section>
 <!-- /.content -->

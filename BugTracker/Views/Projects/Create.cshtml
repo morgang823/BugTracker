@@ -7,21 +7,21 @@
 {
 
     <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Create a Project</h1>
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a asp-area="" asp-controller="Home" asp-action="Dashboard">Home</a>
-                        </li>
-                        <li class="breadcrumb-item active">Add Project</li>
-                    </ol>
-                </div>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Create a Project</h1>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a asp-area="" asp-controller="Home" asp-action="Dashboard">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active">Add Project</li>
+                </ol>
             </div>
-        </div><!-- /.container-fluid -->
-    </section>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
 
     <!-- Main content -->
     <section class="content">
@@ -30,13 +30,8 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="card card-primary">
-                        <div class="card-header">
+                        <div class="card-header bg-success">
                             <h3 class="card-title">General</h3>
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                            </div>
                         </div>
                         <div class="card-body">
                             <div class="form-group">
@@ -75,8 +70,8 @@
                     </div>
                     <!-- /.card -->
                     <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-primary" />
-                        <a class="btn btn-primary" asp-controller="Home" asp-action="Dashboard">Back to List</a>
+                        <input type="submit" value="Create" class="btn btn-success text-white" />
+                        <a class="btn btn-success text-white" asp-controller="Home" asp-action="Dashboard">Back to List</a>
                     </div>
                 </div>
             </div>

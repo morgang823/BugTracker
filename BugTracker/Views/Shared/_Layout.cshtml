@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -134,32 +136,16 @@
                         <i class="far fa-bell"></i>
                         <span class="badge badge-warning navbar-badge">15</span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header">15 Notifications</span>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-envelope mr-2"></i> 4 new messages
-                            <span class="float-right text-muted text-sm">3 mins</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-users mr-2"></i> 8 friend requests
-                            <span class="float-right text-muted text-sm">12 hours</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-file mr-2"></i> 3 new reports
-                            <span class="float-right text-muted text-sm">2 days</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                    </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-                        <i class="fas fa-expand-arrows-alt"></i>
-                    </a>
-                </li>
+                @*@foreach ( Notification item in Model)
+                {
+                    <li class="nav-item">
+                    <h4>@item.Title</h4>
+                    <h4>@item.Created</h4>
+                     <h4>@notification.Sender</h4>
+                     <h4>@notification.Message</h4>
+                    </li>
+                }*@
                 <li class="nav-item">
                     <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
                         <i class="fas fa-th-large"></i>
@@ -264,7 +250,7 @@
                                         <p>Member Projects</p>
                                     </a>
                                 </li>
-                                @if ((User.IsInRole("Admin")) || (User.IsInRole("ProjectManager")))
+                                @if ((User.IsInRole("Admin") || User.IsInRole("ProjectManager")))
                                 {
                                     <li class="nav-item">
                                         <a class="nav-link text-white" asp-area="" asp-controller="Projects" asp-action="Create">
@@ -284,7 +270,7 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                                @if ((User.IsInRole("Admin")) || (User.IsInRole("ProjectManager")))
+                                @if ((User.IsInRole("Admin") || User.IsInRole("ProjectManager")))
                                 {
 
                                     <li class="nav-item">
