@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BugTracker.Models;
 using BugTracker.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -36,15 +37,16 @@ namespace BugTracker.Areas.Identity.Pages.Account.Manage
 
         public class InputModel : BTUser
         {
+            [Display(Name = "Custom Image")]
+            public IFormFile ImageData { get; set; }
 
+            public byte[] ProfilePic { get; set; }
         }
 
         private async Task LoadAsync(BTUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             Username = userName;
-
-            user.AvatarFormFile = BTImageService.DecodeImage(user.AvatarFileData, user.AvatarContentType);
             user = new BTUser
             {
             FirstName = user.FirstName,

@@ -25,5 +25,6 @@ namespace BugTracker.Data
         public DbSet<BugTracker.Models.TicketPriority> TicketPriority { get; set; }
         public DbSet<BugTracker.Models.TicketStatus> TicketStatus { get; set; }
         public DbSet<BugTracker.Models.TicketType> TicketType { get; set; }
+        public object InviteViewModel { get; internal set; }
     }
 }
