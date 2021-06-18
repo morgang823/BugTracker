@@ -376,7 +376,7 @@ namespace BugTracker.Controllers
                         Message = $"New Ticket{ticket?.Title} was edited by {btUser?.FullName}",
                         Created = DateTimeOffset.Now,
                         SenderId = btUser?.Id,
-                        RecipientId = projectManager?.Id,
+                        RecipientId = ticket.DeveloperUserId
                     };
 
                     await _notificationService.SaveNotificationAsync(notification);
@@ -384,7 +384,7 @@ namespace BugTracker.Controllers
 
 
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Ticket", new { });
             }
             ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "FullName", ticket.DeveloperUserId);
             ViewData["OwnerUserId"] = new SelectList(_context.Users, "Id", "FullName", ticket.OwnerUserId);

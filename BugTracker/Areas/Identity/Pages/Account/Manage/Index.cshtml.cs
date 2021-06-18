@@ -86,9 +86,14 @@ namespace BugTracker.Areas.Identity.Pages.Account.Manage
                 user.AvatarFileData = await BTImageService.EncodeFileAsync(user.AvatarFormFile);
                 user.AvatarContentType = BTImageService.ContentType(user.AvatarFormFile);
 
-                await _userManager.UpdateAsync(user);
             }
+            else
+            {
+                user.AvatarFileData = await BTImageService.EncodeFileAsync(user.AvatarFormFile);
+                user.AvatarContentType = BTImageService.ContentType(user.AvatarFormFile);
 
+            }
+            await _userManager.UpdateAsync(user);
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();

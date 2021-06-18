@@ -115,12 +115,12 @@ namespace BugTracker.Controllers
                     Title = "An Attachment Has Been Added To This Ticket",
                     Message = $"Ticket: {newTicket?.Title}, Attachment Added By {ticketAttachment.User?.FullName}",
                     Created = DateTimeOffset.Now,
-                    SenderId = ticketAttachment.User?.Id,
-                    RecipientId = ticketAttachment.Ticket.DeveloperUserId,
+                    SenderId = ticketAttachment.UserId,
+                    RecipientId = newTicket.DeveloperUserId,
                 };
 
 
-                if (ticketAttachment.Ticket.DeveloperUserId != null)
+                if (newTicket.DeveloperUserId != null)
                 {
                     await _notificationService.SaveNotificationAsync(notification);
                     await _notificationService.EmailNotificationAsync(notification, "message has been sent.");
@@ -130,7 +130,7 @@ namespace BugTracker.Controllers
                 return RedirectToAction("Details", "Tickets", new { id = ticketAttachment.TicketId });
             }
             ViewData["TicketId"] = new SelectList(_context.Ticket, "Id", "Description", ticketAttachment.TicketId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", ticketAttachment.UserId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Name", ticketAttachment.UserId);
             return View(ticketAttachment);
         }
 

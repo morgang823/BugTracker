@@ -107,9 +107,10 @@ namespace BugTracker.Controllers
                 {
                     TicketId = newTicket.Id,
                     Title = "Comment Made On This Ticket",
-                    Message = $"Ticket: {newTicket?.Title}, Comment Made By {ticketComment.User?.FullName}",
+                    Message = $"Ticket: {newTicket?.Title}, " +
+                    $"Comment Made By {ticketComment.User.FullName}",
                     Created = DateTimeOffset.Now,
-                    SenderId = ticketComment.User?.Id,
+                    SenderId = ticketComment.UserId,
                     RecipientId = newTicket.DeveloperUserId,
                 };
 

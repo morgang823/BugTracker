@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using BugTracker.Models.Enums;
+using Microsoft.EntityFrameworkCore;
+using BugTracker.Data;
 
 namespace BugTracker.Areas.Identity.Pages.Account
 {
@@ -24,17 +27,19 @@ namespace BugTracker.Areas.Identity.Pages.Account
         private readonly UserManager<BTUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
             UserManager<BTUser> userManager,
             SignInManager<BTUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender, ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         [BindProperty]
@@ -58,6 +63,13 @@ namespace BugTracker.Areas.Identity.Pages.Account
 
             public string LastName { get; set; }
 
+
+            [Required]
+            [Display(Name = "Company Name")]
+            public string CompanyName { get; set; }
+            
+            [Display(Name = "Company Description")]
+            public string CompanyDescription { get; set; }
 
             [Required]
             [EmailAddress]
@@ -93,6 +105,23 @@ namespace BugTracker.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    //Add new registrant a role of Admin
+                    await _userManager.AddToRoleAsync(user, Roles.Admin.ToString());
+
+                    //Create company based on New user Input
+                    Company company = new()
+                    {
+                        Name = Input.CompanyName,
+                        Description = Input.CompanyDescription
+                    };
+
+                    _context.Add(company);
+                    await _context.SaveChangesAsync();
+                    //Update New User CompanyId
+                    user.CompanyId = company.Id;
+                    _context.Update(user);
+                    await _context.SaveChangesAsync();
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
