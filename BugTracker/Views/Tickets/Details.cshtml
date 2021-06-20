@@ -2,6 +2,8 @@
 @using BugTracker.Services.Interfaces
 @inject IBTFileService BTFileService 
 @inject IBTHistoryService HistoryService
+@inject IBTProjectService _projectService
+@inject IBTImageService BTImageService
 
 @{
     ViewData["Title"] = "Details";
@@ -18,8 +20,8 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active"><a href="#">Project</a></li>
+                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Dashboard">Home</a></li>
+                        <li class="breadcrumb-item active"><a>Ticket details</a></li>
                     </ol>
                 </div>
             </div>
@@ -37,9 +39,8 @@
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
                         <div class="row">
-                            <div class="col-12 col-sm-4">
+                            <div class="col-12 col-sm-4" >
                                 <div class="info-box">
-                                    <div class="info-box-content">
                                         <span class="info-box-text text-center text-black">
                                             Ticket Priority
                                         </span>
@@ -50,7 +51,7 @@
                                 </div>
                             </div>
                             <div class="col-12 col-sm-4">
-                                <div class="info-box">
+                                <div class="info-box" id="ticketStatusText">
                                     <div class="info-box-content">
                                         <span class="info-box-text text-center text-black">
                                             Ticket Status
@@ -62,7 +63,7 @@
                                 </div>
                             </div>
                             <div class="col-12 col-sm-4">
-                                <div class="info-box">
+                                <div class="info-box" id="ticketTypeText">
                                     <div class="info-box-content">
                                         <span class="info-box-text text-center text-black">
                                             Ticket Type
@@ -80,14 +81,14 @@
                                 <form asp-action="Create" asp-controller="TicketComments" method="post">
                                     <input type="hidden" name="TicketId" value="@Model.Id" />
                                     <textarea name="Comment" rows="10" class="form-control text-body text-white"></textarea>
-                                    <button class="btn btn-warning text-black font-weight-bold btn-block btn-lg" type="submit">Submit</button>
+                                    <button class="btn btn-success text-white font-weight-bold btn-block btn-lg" type="submit">Submit</button>
                                 </form>
                                 <h4>@Model.Comments.Count Comment(s)</h4>
                                 @foreach (var ticketComment in Model.Comments.OrderByDescending(c => c.Created))
                                 {
                                     <div class="post">
                                         <div class="user-block">
-                                            <img class="img-circle img-bordered-sm" src="../../dist/img/user1-128x128.jpg" alt="user image">
+                                            <img class="img-circle img-bordered-sm" src="@BTImageService.DecodeImage(ticketComment.User.AvatarFileData, ticketComment.User.AvatarContentType)  " alt="user image">
                                             <span class="username">
                                                 <a href="#">@ticketComment.UserId</a>
                                             </span>
@@ -103,8 +104,8 @@
                         </div>
                     </div>
                     <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
-                        <h3 class="text-primary">
-                            <i class="fas fa-paint-brush"></i>@Html.DisplayFor(model => model.Title)
+                        <h3 class="text-success">
+                            <i class="fas fa-ticket"></i>@Html.DisplayFor(model => model.Title)
                         </h3>
                         <h5 class="text-white">
                             @Html.DisplayFor(model => model.Description)
@@ -112,8 +113,8 @@
                         <br>
                         <div class="text-white">
                             <p class="text-lg">
-                                Company: @Html.DisplayFor(model => model.Project.Company.Name)
                                 <b class="d-block">Project: @Html.DisplayFor(model => model.Project.Name)</b>
+                                Project Manager: @await _projectService.GetProjectManagerAsync(Model.ProjectId)
                             </p>
                             <p class="text-lg">
                                 Ticket Owner
@@ -123,7 +124,7 @@
                                 Ticket Devloper
                                 <b class="d-block">@Html.DisplayFor(model => model.DeveloperUser.FullName)</b>
                             </p>
-                            <a asp-route-ticketId="@Model.Id" asp-action="AssignTicket">Assign A Ticket</a>
+                            <a class="btn btn-success text-white" asp-route-ticketId="@Model.Id" asp-action="AssignTicket">Assign A Ticket</a>
                         </div>
                         <h5 class="mt-5 text-white">Ticket Attachments</h5><hr />
                         <div class="row clearfix">
@@ -161,10 +162,10 @@
                                     Description
                                     <input asp-for="@Model.Attachments.FirstOrDefault().Description" type="text" class="form-control" />
                                 </label><br />
-                                <label class="btn btn-outline-primary btn-sm">
+                                <label class="btn btn-outline-success btn-sm">
                                     <input asp-for="@Model.Attachments.FirstOrDefault().FormFile" type="file" />
                                 </label>
-                                <button type="submit" class="btn btn-outline-secondary btn-sm md-btn-flat">Submit</button>
+                                <button type="submit" class="btn btn-outline-secondary btn-success text-white btn-sm md-btn-flat">Submit</button>
                             </div>
                         </form>
                     </div>
@@ -190,14 +191,10 @@
                         <div>
                             <i class="fas fa-envelope bg-blue"></i>
                             <div class="timeline-item">
-                                <span class="time"><i class="fas fa-clock"></i> @item.Ticket </span>
+                                <span class="time"><i class="fas fa-clock"></i> @item.Ticket.Updated </span>
                                 <h3 class="timeline-header">@item.User.FullName </h3>
                                 <div class="timeline-body">
                                   @item.Property  @item.Description 
-                                </div>
-                                <div class="timeline-footer">
-                                    <a class="btn btn-primary btn-sm">Read more</a>
-                                    <a class="btn btn-danger btn-sm">Delete</a>
                                 </div>
                             </div>
                         </div>
@@ -209,3 +206,63 @@
         </div>
         <!-- /.timeline -->
     </section>
+
+@section Scripts
+{
+    <script>
+        function ticketPriBgColor() {
+            let priority = document.getElementById("ticketPriorityText")
+            let ticketPri = "";
+            if (priority == "Urgent") {
+                ticketPri = "bg-danger";
+            }
+            else if (priority == "High") {
+                ticketPri = "bg-warning";
+            }
+            else if (priority == "Medium") {
+                ticketPri = "bg-success";
+            }
+            else if (priority == "Low") {
+                ticketPri = "bg-primary";
+            }
+            document.getElementById("ticketPriorityBox").classList.toggle(ticketPri)
+        }
+        function ticketStatusBgColor() {
+            let status = document.getElementById("ticketStatusText").innerText
+            let ticketStatus = "";
+            if (status == "Unassigned") {
+                ticketStatus = "bg-danger";
+            }
+            else if (status == "Testing") {
+                ticketStatus = "bg-warning";
+            }
+            else if (status == "Resolved") {
+                ticketStatus = "bg-success";
+            }
+            else if (status == "Development") {
+                ticketStatus = "bg-info";
+            }
+            else if (status == "New") {
+                ticketStatus = "bg-primary"
+            }
+            document.getElementById("ticketStatusBox").classList.toggle(ticketStatus)
+        }
+        function ticketTypeBgColor() {
+            let type = document.getElementById("ticketTypeText").innerText
+            let ticketType = "";
+            if (type == "Runtime") {
+                ticketType = "bg-danger";
+            }
+            else if (type == "Maintenance") {
+                ticketType = "bg-warning";
+            }
+            else if (type == "New Development") {
+                ticketType = "bg-success";
+            }
+            else if (type == "UI") {
+                ticketType = "bg-info";
+            }
+            document.getElementById("ticketTypeBox").classList.toggle(ticketType)
+        }
+    </script>
+}

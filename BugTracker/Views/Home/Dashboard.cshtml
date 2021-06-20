@@ -2,6 +2,7 @@
 @using BugTracker.Services.Interfaces
 @using BugTracker.Models
 @inject IBTImageService BTImageService
+@inject IBTRolesService _roleService
 @{
     ViewData["Title"] = "Dashboard";
 }
@@ -16,8 +17,7 @@
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Dashboard</li>
+                    <li class="breadcrumb-item active text-success">Dashboard</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -91,7 +91,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header bg-success">
                         <h3 class="card-title">Company Data</h3>
                     </div>
                     <div class="card-body">
@@ -108,9 +108,8 @@
             </div>
             <div class="col-md-3">
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Company Data</h3><br />
-                        <h3 class="card-title">@Model.CurrentUser.CompanyId</h3>
+                    <div class="card-header bg-success">
+                        <h3 class="card-title">@Model.CurrentUser.Company</h3>
                     </div>
                     <div class="card-body">
                         <div class="info info-box-content">Members <p class=float-right>@Model.Members.Count</p></div>
@@ -126,73 +125,24 @@
             </div>
             <div class="col-md-3">
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Ticketss By Prioirty</h3>
+                    <div class="card-header bg-success">
+                        <h3 class="card-title">Tickets Per Project</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="chart-responsive">
-                                    <canvas id="adminChart" height="150"></canvas>
+                                    <canvas id="donutChart">
+                                    </canvas>
                                 </div>
                                 <!-- ./chart-responsive -->
                             </div>
-                            <!-- /.col -->
-                            <div class="col-md-4">
-                                <ul class="chart-legend clearfix">
-                                    <li><i class="far fa-circle text-danger"></i>Low</li>
-                                    <li><i class="far fa-circle text-success"></i> Medium</li>
-                                    <li><i class="far fa-circle text-warning"></i> High</li>
-                                    <li><i class="far fa-circle text-warning"></i> Urgent</li>
-                                </ul>
-                            </div>
-                            <!-- /.col -->
+                            <!-- /.col -->                        
                         </div>
                         <!-- /.row -->
                     </div>
                     <!-- /.card-body -->
-                    <div class="card-footer bg-light p-0">
-                        <ul class="nav nav-pills flex-column">
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    Low Priority
-                                    <span class="float-right text-danger">
-                                        <i class="fas fa-arrow-down text-sm"></i>
-                                        @Model.LowPriority
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    Medium Priority
-                                    <span class="float-right text-success">
-                                        <i class="fas fa-arrow-up text-sm"></i>
-                                        @Model.MediumPriority
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    High Priority
-                                    <span class="float-right text-warning">
-                                        <i class="fas fa-arrow-left text-sm"></i>
-                                        @Model.HighPriority
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    Urgent Priority
-                                    <span class="float-right text-warning">
-                                        <i class="fas fa-arrow-left text-sm"></i>
-                                        @Model.UrgentPriority
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- /.footer -->
                 </div>
             </div>
             <div class="col-md-3">
@@ -222,9 +172,9 @@
                                 @foreach (var member in Model.Members)
                                 {
                                     <li>
-                                        <img src="@BTImageService.DecodeImage(member.AvatarFileData, member.AvatarContentType)" alt="User Image">
+                                        <img class="img-thumbnail card-img-top img-sm" src="@BTImageService.DecodeImage(member.AvatarFileData, member.AvatarContentType)" alt="User Image">
                                         <a class="users-list-name" href="#">@member.FullName</a>
-                                        <span class="users-list-date">@member.Id.</span>
+                                        <span class="users-list-date">@await _roleService.ListUserRolesAsync(member)</span>
                                     </li>
                                 }
                             </ul>
@@ -246,7 +196,7 @@
                 <div class="col-8">
                     <!-- TABLE: All Tickets -->
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header bg-success">
                             <h3 class="card-title">Role Tickets</h3>
                         </div>
                         <!-- /.card-header -->
@@ -458,8 +408,8 @@
                         <span class="info-box-icon"><i class="far fa-heart"></i></span>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">Total Tickets on Your Projects</span>
-                            <span class="info-box-number"></span>
+                            <span class="info-box-text">Total Company Tickets</span>
+                            <span class="info-box-number">@Model.Tickets.Count</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -479,7 +429,7 @@
 
                         <div class="info-box-content">
                             <span class="info-box-text">New Tickets</span>
-                            <span class="info-box-number">@Model.Tickets.Where(t => t.TicketType.Name == "New").ToList().Count()</span>
+                            <span class="info-box-number">@Model.Tickets.Where(t => t.TicketType.Name == "New").Count()</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -540,7 +490,7 @@
                                             <i class="fas fa-arrow-left text-sm"></i> 0%
                                         </span>
                                     </a>
-                                </li>                            
+                                </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         China
@@ -559,54 +509,12 @@
             </div>
             <!-- /.row -->
         </div>
-    <!--/. container-fluid -->
+        <!--/. container-fluid -->
     </div>
 </section>
 <!-- /.content -->
 
 @section Scripts{
-    <script>
-        const { ui } = require("jquery");
-
-        var ctx = document.getElementById('adminChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ["Low", "Medium", "High", "Urgent"],
-                datasets: [{
-                    data: [@Model.LowPriority, @Model.MediumPriority, @Model.HighPriority, @Model.UrgentPriority],
-                    borderColor: [
-                        "#3cba9f",
-                        "#ffa500",
-                        "#ff99ff",
-                        "#c45850",
-
-                    ],
-                    backgroundColor: [
-                        "rgb(60,186,159,0.1)",
-                        "rgb(255,165,0,0.1)",
-                        "rgb(255,153,255,0.1)",
-                        "rgb(196,88,80,0.1)",
-                    ],
-                    borderWidth: 2,
-                }]
-            },
-            options: {
-                scales: {
-                    xAxes: [{
-                        display: false,
-                    }],
-                    yAxes: [{
-                        display: false,
-                    }],
-                }
-            },
-        });
-
-
-        /* END EXTERNAL SOURCE */
-        /* BEGIN EXTERNAL SOURCE */
-    </script>
 
     <script>
         var ctx = document.getElementById('barChart').getContext('2d');
@@ -658,6 +566,40 @@
         $(function () {
             $('#subTable').DataTable();
         });
+
+    </script>
+
+    <script type="text/javascript">
+            $.ajax({
+                type: "POST",
+                url: "/Home/DonutMethod",
+                data: '{@Model.LowPriority, @Model.MediumPriority, @Model.HighPriority, @Model.UrgentPriority}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    //Donut
+                    var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
+                    var donutData = result
+
+                    var donutOptions = {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                    }
+                    //Create pie or douhnut chart
+                    // You can switch between pie and douhnut using the method below.
+                    new Chart(donutChartCanvas, {
+                        type: 'doughnut',
+                        data: donutData,
+                        options: donutOptions
+                    })
+                },
+                failure: function (result) {
+                    alert(result.d);
+                },
+                error: function (result) {
+                    alert(result.d);
+                }
+            });
 
     </script>
 }

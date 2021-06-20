@@ -132,9 +132,11 @@ namespace BugTracker.Services
                     await _context.TicketHistory.AddAsync(history);
 
                 }
+
+
                 //Save the TicketHistory database set to the database
             }
-                await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<TicketHistory>> GetCompanyTicketsHistoriesAsync(int companyId)

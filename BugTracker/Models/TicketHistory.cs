@@ -37,6 +37,10 @@ namespace BugTracker.Models
 
         public virtual Project Project { get; set; }
 
+        public virtual TicketAttachment TicketAttachment { get; set; }
+
+        public virtual TicketComment TicketComment { get; set; }
+
 
     }
 }

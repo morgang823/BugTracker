@@ -26,6 +26,11 @@ namespace BugTracker.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
             BTImageService = bTImageService;
         }
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
 
         public string Username { get; set; }
 
@@ -34,29 +39,58 @@ namespace BugTracker.Areas.Identity.Pages.Account.Manage
 
         [BindProperty]
         public InputModel Input { get; set; }
+    
+        public byte[] ImageData { get; set; }
 
-        public class InputModel : BTUser
+        public string ImageContentType { get; set; }
+
+        public class InputModel
         {
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
             [Display(Name = "Custom Image")]
-            public IFormFile ImageData { get; set; }
+            public IFormFile ImageFile { get; set; }
+
+            public byte[] ImageData { get; set;}
+
+            public string ContentType { get; set; }
+
+            [Phone]
+            [Display(Name ="Phone number")]
+
+            public string PhoneNumber { get; set; }
         }
 
         private async Task LoadAsync(BTUser user)
         {
+            FirstName = user.FirstName;
+            LastName = user.LastName;
             var userName = await _userManager.GetUserNameAsync(user);
+            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             Username = userName;
-            string contentType = user.AvatarContentType;
+            ImageData = user.AvatarFileData;
+            ImageContentType = user.AvatarContentType;
 
-            user = new BTUser
+            Input = new InputModel
             {
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            AvatarFormFile = user.AvatarFormFile
+                PhoneNumber = phoneNumber,
+                ImageData = user.AvatarFileData,
+                ContentType = user.AvatarContentType
             };
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
+
+            if(User.IsInRole("DemoUser"))
+            {
+                return RedirectToAction("DemoError", "Home");
+            }
+
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -80,19 +114,26 @@ namespace BugTracker.Areas.Identity.Pages.Account.Manage
                 await LoadAsync(user);
                 return Page();
             }
-
-            if (user.AvatarFormFile is null)
+            if(Input.FirstName is not null)
             {
-                user.AvatarFileData = await BTImageService.EncodeFileAsync(user.AvatarFormFile);
-                user.AvatarContentType = BTImageService.ContentType(user.AvatarFormFile);
+                user.FirstName = Input.FirstName;
+                await _userManager.UpdateAsync(user);
 
             }
-            else
+            if (Input.LastName is not null)
             {
-                user.AvatarFileData = await BTImageService.EncodeFileAsync(user.AvatarFormFile);
-                user.AvatarContentType = BTImageService.ContentType(user.AvatarFormFile);
+                user.LastName = Input.LastName;
+                await _userManager.UpdateAsync(user);
 
             }
+
+            if (Input.ImageFile is not null)
+            {
+                user.AvatarFileData = await BTImageService.EncodeFileAsync(Input.ImageFile);
+                user.AvatarContentType = BTImageService.ContentType(Input.ImageFile);
+
+            }
+           
             await _userManager.UpdateAsync(user);
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";

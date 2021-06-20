@@ -49,7 +49,7 @@ namespace BugTracker.Controllers
         }
 
         //Get all tickets for a company
-        [Authorize(Roles = "ProjectManager")]
+        [Authorize(Roles = "Admin, ProjectManager")]
         public async Task<IActionResult> AllTickets()
         {
             //Get CompanyID
@@ -59,7 +59,7 @@ namespace BugTracker.Controllers
         }
         //Get
         [HttpGet]
-        [Authorize(Roles = "ProjectManager")]
+        [Authorize(Roles = "Admin, ProjectManager")]
 
         public async Task<IActionResult> AssignTicket(int? ticketId)
         {
@@ -392,7 +392,9 @@ namespace BugTracker.Controllers
             ViewData["TicketPriorityId"] = new SelectList(_context.Set<TicketPriority>(), "Id", "Name", ticket.TicketPriorityId);
             ViewData["TicketStatusId"] = new SelectList(_context.Set<TicketStatus>(), "Id", "Name", ticket.TicketStatusId);
             ViewData["TicketTypeId"] = new SelectList(_context.Set<TicketType>(), "Id", "Name", ticket.TicketTypeId);
-            return View(ticket);
+            //return View(ticket);
+            return RedirectToAction("Details", "Ticket", new {ticket.Id});
+
         }
 
         // GET: Tickets/Delete/5
