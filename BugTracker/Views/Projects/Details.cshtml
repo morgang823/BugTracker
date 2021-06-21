@@ -1,78 +1,105 @@
 ﻿@model BugTracker.Models.Project
+@using BugTracker.Services.Interfaces
+@inject IBTImageService BTImageService
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-<a class="nav-link text-white" asp-area=""  asp-action="AssignUsers">
-    </a>
-    <div>
-        <h4>Project</h4>
-        <hr />
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Name)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Description)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Description)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.StartDate)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.StartDate)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.EndDate)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.EndDate)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ImageFileName)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.ImageFileName)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ImageFileData)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.ImageFileData)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ImageContentType)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.ImageContentType)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Archived)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Archived)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ProjectPriority)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.ProjectPriority.Id)
-            </dd>
-        </dl>
-        Members:
-        @foreach (BTUser member in Model.Members)
-        {
-            <p>@member.FullName</p>
-        }
+<h1 class=" bg-success">Project Details</h1>
+
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Project Details</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<!-- Main content -->
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card border-success">
+                    <div class="card-body">
+                        <h1>
+                            @Html.DisplayFor(model => model.Name)
+                        </h1>
+                        <hr />
+                        <h3 class="card-text">
+                            @Html.DisplayFor(model => model.Description)
+                        </h3>
+                    </div>
+                </div>
+
+                <div class="card card-primary card-outline">
+                    <div class="card-body">
+                        <h1>Project Time line</h1>
+                        <hr />
+                        <div class="col-6">
+                            <h3>@Html.DisplayNameFor(model => model.StartDate): @Html.DisplayFor(model => model.StartDate)</h3>
+                        </div>
+
+                        <div class=" col-6">
+                            <h3>@Html.DisplayNameFor(model => model.EndDate): @Html.DisplayFor(model => model.EndDate)</h3>
+                        </div>
+                    </div>
+                </div><!-- /.card -->
+            </div>
+            <!-- /.col-md-6 -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="m-0">Featured</h5>
+                    </div>
+                    <div class="card-body">
+                        <a class="btn-lg btn-success btn-block text-white text-center" asp-area="" asp-action="AssignUsers">
+                            Assign Members
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col-md-6 -->
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Members List</h3>
+                        <!-- /.card-header -->
+                        <div class="card-body p-0">
+                            <ul class="users-list clearfix">
+                                @foreach (var member in Model.Members)
+                                {
+                                    <li>
+                                        <img class="img-lg" src="@BTImageService.DecodeImage(member.AvatarFileData, member.AvatarContentType)" alt="User Image" style="inline-size:fit-content()">
+                                        <h3>@member.FullName</h3>
+                                    </li>
+                                }
+                            </ul>
+                            <!-- /.users-list -->
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer text-center">
+                            <a href="javascript:">View All Users</a>
+                        </div>
+                        <!-- /.card-footer -->
+                    </div>
+                    <!--/.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+        </div><!-- /.container-fluid -->
     </div>
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-        <a asp-action="Index">Back to List</a>
-    </div>
+    <!-- /.content -->
+</div>

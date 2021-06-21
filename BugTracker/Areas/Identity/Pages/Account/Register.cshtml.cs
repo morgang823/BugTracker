@@ -17,6 +17,10 @@ using Microsoft.Extensions.Logging;
 using BugTracker.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using BugTracker.Data;
+using Microsoft.AspNetCore.Http;
+using BugTracker.Services.Interfaces;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace BugTracker.Areas.Identity.Pages.Account
 {
@@ -28,18 +32,23 @@ namespace BugTracker.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly ApplicationDbContext _context;
+        private readonly IBTImageService _imageService;
+        private readonly IConfiguration _configuration;
+
 
         public RegisterModel(
             UserManager<BTUser> userManager,
             SignInManager<BTUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender, ApplicationDbContext context)
+            IEmailSender emailSender, ApplicationDbContext context, IBTImageService imageService, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             _context = context;
+            _imageService = imageService;
+            _configuration = configuration;
         }
 
         [BindProperty]
@@ -51,6 +60,9 @@ namespace BugTracker.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            [Display(Name = "Custom Image")]
+            public IFormFile ImageData { get; set; }
+
             [Required]
             [Display(Name = "First Name")]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
@@ -100,7 +112,13 @@ namespace BugTracker.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new BTUser { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName };
+                var user = new BTUser { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName,
+                    AvatarFileData = (await _imageService.EncodeFileAsync(Input.ImageData)) ??
+                             await _imageService.EncodeFileAsync(_configuration["DefaultUserImage"]),
+                    AvatarContentType = Input.ImageData is null ?
+                                    Path.GetExtension(_configuration["DefaultUserImage"]) :
+                                    _imageService.ContentType(Input.ImageData)
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

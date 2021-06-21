@@ -1,6 +1,6 @@
 ﻿@model BugTracker.Models.Ticket
 @using BugTracker.Services.Interfaces
-@inject IBTFileService BTFileService 
+@inject IBTFileService BTFileService
 @inject IBTHistoryService HistoryService
 @inject IBTProjectService _projectService
 @inject IBTImageService BTImageService
@@ -11,36 +11,20 @@
 
 <h1>Ticket Details</h1>
 <!-- Content Wrapper. Contains page content -->
-
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Dashboard">Home</a></li>
-                        <li class="breadcrumb-item active"><a>Ticket details</a></li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
-    <!-- Main content -->
-    <section class="content">
+<!-- Content Header (Page header) -->
+<section class="content-header">
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">
-                </h3>
+                <h3 class="card-title">Projects Detail</h3>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
                         <div class="row">
-                            <div class="col-12 col-sm-4" >
+                            <div class="col-12 col-sm-4">
                                 <div class="info-box">
+                                    <div class="info-box-content">
                                         <span class="info-box-text text-center text-black">
                                             Ticket Priority
                                         </span>
@@ -51,7 +35,7 @@
                                 </div>
                             </div>
                             <div class="col-12 col-sm-4">
-                                <div class="info-box" id="ticketStatusText">
+                                <div class="info-box">
                                     <div class="info-box-content">
                                         <span class="info-box-text text-center text-black">
                                             Ticket Status
@@ -63,7 +47,7 @@
                                 </div>
                             </div>
                             <div class="col-12 col-sm-4">
-                                <div class="info-box" id="ticketTypeText">
+                                <div class="info-box">
                                     <div class="info-box-content">
                                         <span class="info-box-text text-center text-black">
                                             Ticket Type
@@ -194,7 +178,7 @@
                                 <span class="time"><i class="fas fa-clock"></i> @item.Ticket.Updated </span>
                                 <h3 class="timeline-header">@item.User.FullName </h3>
                                 <div class="timeline-body">
-                                  @item.Property  @item.Description 
+                                    @item.Property  @item.Description
                                 </div>
                             </div>
                         </div>
@@ -205,7 +189,12 @@
             <!-- /.col -->
         </div>
         <!-- /.timeline -->
-    </section>
+
+</section>
+
+
+
+
 
 @section Scripts
 {

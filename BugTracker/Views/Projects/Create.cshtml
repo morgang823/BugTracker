@@ -5,23 +5,23 @@
 }
 @if ((User.IsInRole("Administrator")) || (User.IsInRole("ProjectManager")))
 {
+    <h1 class=" bg-success">Create a Project</h1>
 
     <!-- Content Header (Page header) -->
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Create a Project</h1>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a asp-area="" asp-controller="Home" asp-action="Dashboard">Home</a>
-                    </li>
-                    <li class="breadcrumb-item active">Add Project</li>
-                </ol>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a asp-area="" asp-controller="Home" asp-action="Dashboard">Home</a>
+                        </li>
+                        <li class="breadcrumb-item active">Add Project</li>
+                    </ol>
+                </div>
             </div>
-        </div>
-    </div><!-- /.container-fluid -->
-</section>
+        </div><!-- /.container-fluid -->
+    </section>
 
     <!-- Main content -->
     <section class="content">
@@ -79,7 +79,7 @@
     </section>
     <!-- /.content -->
 }
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
 

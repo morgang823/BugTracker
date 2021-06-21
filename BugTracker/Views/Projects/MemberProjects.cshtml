@@ -4,13 +4,11 @@
     ViewData["Title"] = "View";
 }
 
-<h1>Member Projects</h1>
+<h1 class=" bg-success">Member Projects</h1>
 @if ((User.IsInRole("Admin")) || (User.IsInRole("ProjectManager")))
 {
 
-    <p class="btn-group btn-success text-white btn-outline-dark">
-        <a class="text-white font-weight-bold" asp-action="Create">Create New Project</a>
-    </p>
+        <a class="btn btn-success text-white" asp-action="Create">Create New Project</a>
 
 }
     <section class="content">
