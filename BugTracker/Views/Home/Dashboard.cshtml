@@ -167,22 +167,21 @@
                         <h3 class="card-title">Members List</h3>
                         <!-- /.card-header -->
                         <div class="card-body p-0">
+                            <div class="row">
                             <ul class="users-list clearfix">
                                 @foreach (var member in Model.Members)
                                 {
                                     <li>
-                                        <img class="img-lg" src="@BTImageService.DecodeImage(member.AvatarFileData, member.AvatarContentType)" alt="User Image"  style="inline-size:fit-content()">
+                                        <img class="img-lg" src="@BTImageService.DecodeImage(member.AvatarFileData, member.AvatarContentType)" alt="User Image" style="inline-size:fit-content()">
                                         <h3>@member.FullName</h3>
                                         <span class="users-list-date">@await _roleService.ListUserRolesAsync(member)</span>
                                     </li>
                                 }
                             </ul>
                             <!-- /.users-list -->
+                            </div>
                         </div>
                         <!-- /.card-body -->
-                        <div class="card-footer text-center">
-                            <a href="javascript:">View All Users</a>
-                        </div>
                         <!-- /.card-footer -->
                     </div>
                     <!--/.card -->
@@ -436,14 +435,14 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">tickets</h3>
+                            <h3 class="card-title">Tickets By Status</h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="chart-responsive">
-                                        <canvas id="pieChart" height="150"></canvas>
+                                        <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                                     </div>
                                     <!-- ./chart-responsive -->
                                 </div>
@@ -454,8 +453,6 @@
                                         <li><i class="far fa-circle text-success"></i> IE</li>
                                         <li><i class="far fa-circle text-warning"></i> FireFox</li>
                                         <li><i class="far fa-circle text-info"></i> Safari</li>
-                                        <li><i class="far fa-circle text-primary"></i> Opera</li>
-                                        <li><i class="far fa-circle text-secondary"></i> Navigator</li>
                                     </ul>
                                 </div>
                                 <!-- /.col -->
@@ -467,7 +464,7 @@
                             <ul class="nav nav-pills flex-column">
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
-                                        United States of America
+                                        Urgent
                                         <span class="float-right text-danger">
                                             <i class="fas fa-arrow-down text-sm"></i>
                                             12%
@@ -476,7 +473,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
-                                        India
+                                        High
                                         <span class="float-right text-success">
                                             <i class="fas fa-arrow-up text-sm"></i> 4%
                                         </span>
@@ -484,7 +481,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
-                                        China
+                                        Medium
                                         <span class="float-right text-warning">
                                             <i class="fas fa-arrow-left text-sm"></i> 0%
                                         </span>
@@ -492,7 +489,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
-                                        China
+                                        Low
                                         <span class="float-right text-warning">
                                             <i class="fas fa-arrow-left text-sm"></i> 0%
                                         </span>
@@ -589,6 +586,39 @@
                         type: 'doughnut',
                         data: donutData,
                         options: donutOptions
+                    })
+                },
+                failure: function (result) {
+                    alert(result.d);
+                },
+                error: function (result) {
+                    alert(result.d);
+                }
+            });
+
+    </script>
+
+    <script type="text/javascript">
+            $.ajax({
+                type: "POST",
+                url: "/Home/DonutMethod",
+                data: '{@Model.DevelopmentTickets, @Model.UnassignedTickets, @Model.ResolvedTickets}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    //Donut
+                    var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
+                    var donutData = result
+                    var donutOptions = {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                    }
+                    //Create pie or douhnut chart
+                    // You can switch between pie and douhnut using the method below.
+                    new Chart(pieChartCanvas, {
+                        type: 'pie',
+                        data: pieData,
+                        options: pieOptions
                     })
                 },
                 failure: function (result) {

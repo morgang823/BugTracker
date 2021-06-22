@@ -60,14 +60,17 @@ namespace BugTracker.Controllers
                 Members = await _infoService.GetAllMembersAsync(companyId),
                 Developers = (await _infoService.GetMembersInRoleAsync("Developer", companyId)).Count,
                 CurrentUser = user,
-                //Roles = await _roleService.ListUserRolesAsync(user),
+                //Counts, for Ticket Status
                 LowPriority = (await _ticketService.GetAllTicketsByPriorityAsync(companyId, "Low")).Count,
                 MediumPriority = (await _ticketService.GetAllTicketsByPriorityAsync(companyId, "Medium")).Count,
                 HighPriority = (await _ticketService.GetAllTicketsByPriorityAsync(companyId, "High")).Count,
                 UrgentPriority = (await _ticketService.GetAllTicketsByPriorityAsync(companyId, "Urgent")).Count,
+                //Additional Ticket Counts
+
                 UnassignedTickets = (await _ticketService.GetAllTicketsByStatusAsync(companyId, "Unassigned")).Count,
+                ResolvedTickets = (await _ticketService.GetAllTicketsByStatusAsync(companyId, "Resolved")).Count,
                 DevelopmentTickets = (await _ticketService.GetAllTicketsByStatusAsync(companyId, "Development")).Count,
-                //Type
+                // Counts for Ticket Type
                 NewDev = (await _ticketService.GetAllTicketsByTypeAsync(companyId, "New Development")).Count,
                 Runtime = (await _ticketService.GetAllTicketsByTypeAsync(companyId, "Runtime")).Count,
                 UIType = (await _ticketService.GetAllTicketsByTypeAsync(companyId, "UI")).Count,

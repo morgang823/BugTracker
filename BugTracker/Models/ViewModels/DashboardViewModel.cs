@@ -16,6 +16,7 @@ namespace BugTracker.Models.ViewModels
 
         public int UnassignedTickets { get; set; }
         public int DevelopmentTickets { get; set; }
+        public int ResolvedTickets { get; set; }
 
         public int Developers{ get; set; }
 
@@ -27,6 +28,10 @@ namespace BugTracker.Models.ViewModels
         public int Runtime { get; set; }
         public int UIType { get; set; }
         public int Maintenance { get; set; }
+        public int Low { get; set; }
+        public int Medium { get; set; }
+        public int High { get; set; }
+        public int Urgent { get; set; }
 
 
         public List<Ticket> DevTickets { get; set; }
