@@ -81,7 +81,7 @@ namespace BugTracker.Controllers
             {
                 ticketComment.Created = DateTime.Now;
                 ticketComment.UserId = _userManager.GetUserId(User);
-
+                BTUser btUser = await _userManager.GetUserAsync(User);
 
                 Ticket oldTicket = await _context.Ticket
                     .Include(t => t.TicketPriority)
@@ -108,7 +108,7 @@ namespace BugTracker.Controllers
                     TicketId = newTicket.Id,
                     Title = "Comment Made On This Ticket",
                     Message = $"Ticket: {newTicket?.Title}, " +
-                    $"Comment Made By {ticketComment.User.FullName}",
+                    $"Comment Made By {btUser?.FullName}",
                     Created = DateTimeOffset.Now,
                     SenderId = ticketComment.UserId,
                     RecipientId = newTicket.DeveloperUserId,

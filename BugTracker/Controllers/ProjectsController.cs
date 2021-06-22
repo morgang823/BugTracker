@@ -32,7 +32,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: Projects
-        [Authorize(Roles = "Admin, ProjectManager")]
+        [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> Index()
         {
@@ -103,9 +103,9 @@ namespace BugTracker.Controllers
                 project.CompanyId = companyId;
                 _context.Add(project);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(MemberProjects));
             }
-            ViewData["ProjectPriorityId"] = new SelectList(_context.Set<ProjectPriority>(), "Id", "Id", project.ProjectPriorityId);
+            ViewData["ProjectPriorityId"] = new SelectList(_context.Set<ProjectPriority>(), "Id", "Name", project.ProjectPriorityId);
             return View(project);
         }
 

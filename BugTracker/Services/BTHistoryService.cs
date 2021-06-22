@@ -131,7 +131,7 @@ namespace BugTracker.Services
                     };
                     await _context.TicketHistory.AddAsync(history);
 
-                }
+                }               
 
 
                 //Save the TicketHistory database set to the database

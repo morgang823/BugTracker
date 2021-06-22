@@ -86,6 +86,7 @@ namespace BugTracker.Controllers
                 ticketAttachment.FileName = ticketAttachment.FormFile.FileName;
                 ticketAttachment.Created = DateTimeOffset.Now;
                 ticketAttachment.UserId = _userManager.GetUserId(User);
+                BTUser btUser = await _userManager.GetUserAsync(User);
 
 
                 Ticket oldTicket = await _context.Ticket
@@ -113,7 +114,7 @@ namespace BugTracker.Controllers
                 {
                     TicketId = newTicket.Id,
                     Title = "An Attachment Has Been Added To This Ticket",
-                    Message = $"Ticket: {newTicket?.Title}, Attachment Added By {ticketAttachment.User?.FullName}",
+                    Message = $"Ticket: {newTicket?.Title}, Attachment Added By {btUser?.FullName}",
                     Created = DateTimeOffset.Now,
                     SenderId = ticketAttachment.UserId,
                     RecipientId = newTicket.DeveloperUserId,
