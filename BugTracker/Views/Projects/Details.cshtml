@@ -61,11 +61,15 @@
                     <div class="card-header">
                         <h5 class="m-0">Featured</h5>
                     </div>
-                    <div class="card-body">
-                        <a class="btn-lg btn-success btn-block text-white text-center" asp-area="" asp-action="AssignUsers">
-                            Assign Members
-                        </a>
-                    </div>
+                    @if ((User.IsInRole("Admin") || User.IsInRole("ProjectManager")))
+                    {
+                        <div class="card-body">
+                            <a class="btn-lg btn-success btn-block text-white text-center" asp-route-id="@Model.Id" asp-action="AssignUsers">
+                                Assign Members
+                            </a>
+                        </div>
+
+                    }
                 </div>
             </div>
             <!-- /.col-md-6 -->
@@ -90,9 +94,6 @@
                             <!-- /.users-list -->
                         </div>
                         <!-- /.card-body -->
-                        <div class="card-footer text-center">
-                            <a href="javascript:">View All Users</a>
-                        </div>
                         <!-- /.card-footer -->
                     </div>
                     <!--/.card -->

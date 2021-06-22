@@ -16,9 +16,6 @@
                 </h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item active text-success">Dashboard</li>
-                </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
@@ -95,7 +92,7 @@
                         <h3 class="card-title">Company Data</h3>
                     </div>
                     <div class="card-body" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;">
-                        <div class="info info-box-content">New Users</div>
+                        <div class="info info-box-content">New Tickets<p class=float-right>@Model.Tickets.Where(t => t.TicketStatusId == 6).Count()</p> </div>
                         <hr />
                         <div class="info info-box-content">Total Users <p class=float-right>@Model.Members.Count</p> </div>
                         <hr />
@@ -109,16 +106,16 @@
             <div class="col-md-3">
                 <div class="card">
                     <div class="card-header bg-success">
-                        <h3 class="card-title">@Model.CurrentUser.Company</h3>
+                        <h3 class="card-title">Company Data</h3>
                     </div>
                     <div class="card-body" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;">
                         <div class="info info-box-content">Members <p class=float-right>@Model.Members.Count</p></div>
                         <hr />
                         <div class="info info-box-content">Projects <p class=float-right>@Model.Projects.Count</p></div>
                         <hr />
-                        <div class="info info-box-content">Tickets <p class=float-right>@Model.Tickets.Count</p></div>
+                        <div class="info info-box-content">All Tickets <p class=float-right>@Model.Tickets.Count</p></div>
                         <hr />
-                        <div class="info info-box-content">Notifications</div>
+                        <div class="info info-box-content">Resolved Tickets<p class=float-right>@Model.Tickets.Where(t => t.TicketStatusId == 2).Count()</p></div>
                     </div>
                     <div class="card-footer"></div>
                 </div>
@@ -380,7 +377,7 @@
                                                     @Html.DisplayFor(modelItem => item.TicketStatus.Name)
                                                 </td>
                                                 <td class="btn-group btn-success text-white btn-outline-dark">
-                                                    <a class="text-dark font-weight-bold" asp-action="Details" asp-route-id="@item.Id">Ticket Details</a> |
+                                                    <a class="text-dark font-weight-bold" asp-action="Details" asp-route-id="@item.Id">Ticket Details</a>
                                                 </td>
                                             </tr>
                                         }
@@ -431,7 +428,7 @@
 
                         <div class="info-box-content">
                             <span class="info-box-text">New Tickets</span>
-                            <span class="info-box-number">@Model.Tickets.Where(t => t.TicketType.Name == "New").Count()</span>
+                            <span class="info-box-number">@Model.Tickets.Where(t => t.TicketStatusId == 6).Count()</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -546,7 +543,7 @@
                     data: [@Model.Maintenance],
                     label: "Maintenance",
                     borderColor: "rgb(196,88,80)",
-                    backgroundColor: "rgb(196,88,80,0.1)",
+                    backgroundColor: "rgb(240, 230, 140)",
                     borderWidth: 2
                 }
                 ]
@@ -582,7 +579,6 @@
                     //Donut
                     var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
                     var donutData = result
-
                     var donutOptions = {
                         maintainAspectRatio: false,
                         responsive: true,

@@ -49,7 +49,7 @@ namespace BugTracker.Controllers
         }
 
         //Get all tickets for a company
-        [Authorize(Roles = "Admin, ProjectManager")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AllTickets()
         {
             //Get CompanyID
@@ -59,7 +59,7 @@ namespace BugTracker.Controllers
         }
         //Get
         [HttpGet]
-        [Authorize(Roles = "Admin, ProjectManager")]
+        [Authorize(Roles = "ProjectManager")]
 
         public async Task<IActionResult> AssignTicket(int? ticketId)
         {
@@ -384,7 +384,6 @@ namespace BugTracker.Controllers
 
 
                 }
-                return RedirectToAction("Details", "Ticket", new { });
             }
             ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "FullName", ticket.DeveloperUserId);
             ViewData["OwnerUserId"] = new SelectList(_context.Users, "Id", "FullName", ticket.OwnerUserId);

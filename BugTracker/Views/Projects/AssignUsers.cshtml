@@ -1,5 +1,5 @@
 ﻿@model BugTracker.Models.ViewModels.ProjectMembersViewModel
-@if ((User.IsInRole("Administrator")) || (User.IsInRole("ProjectManager")))
+@if ((User.IsInRole("Admin")) || (User.IsInRole("ProjectManager")))
 {
     <div class="container">
         <h2> Assign Users </h2>

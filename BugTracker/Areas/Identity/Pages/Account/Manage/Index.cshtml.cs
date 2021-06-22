@@ -131,10 +131,10 @@ namespace BugTracker.Areas.Identity.Pages.Account.Manage
             {
                 user.AvatarFileData = await BTImageService.EncodeFileAsync(Input.ImageFile);
                 user.AvatarContentType = BTImageService.ContentType(Input.ImageFile);
-
             }
-           
-            await _userManager.UpdateAsync(user);
+
+
+                await _userManager.UpdateAsync(user);
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();

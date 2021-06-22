@@ -112,12 +112,13 @@ namespace BugTracker.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new BTUser { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName,
-                    AvatarFileData = (await _imageService.EncodeFileAsync(Input.ImageData)) ??
-                             await _imageService.EncodeFileAsync(_configuration["DefaultUserImage"]),
-                    AvatarContentType = Input.ImageData is null ?
-                                    Path.GetExtension(_configuration["DefaultUserImage"]) :
-                                    _imageService.ContentType(Input.ImageData)
+                var user = new BTUser {
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    AvatarFileData = await _imageService.EncodeFileAsync(Input.ImageData),
+                    AvatarContentType =_imageService.ContentType(Input.ImageData)
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)

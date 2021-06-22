@@ -87,14 +87,14 @@
                                         @Html.DisplayFor(modelItem => item.ProjectPriority.Id)
                                     </td>
                                     <td>
-                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                        <a class="btn btn-success text-white" asp-action="Details" asp-route-id="@item.Id">Details</a>
                                     </td>
                                     @if ((User.IsInRole("Administrator")) || (User.IsInRole("ProjectManager")))
                                     {
                                     <td>
-                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                        <a asp-action="AssignUsers" asp-route-id="@item.Id">AssignUsers</a>
+                                        <a class="btn btn-success text-white" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                        <a class="btn btn-success text-white" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                        <a class="btn btn-success text-white" asp-action="AssignUsers" asp-route-id="@item.Id">AssignUsers</a>
                                     </td>
                                     }
                                 </tr>

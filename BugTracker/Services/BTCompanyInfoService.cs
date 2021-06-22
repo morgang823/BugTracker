@@ -31,6 +31,7 @@ namespace BugTracker.Services.Interfaces
         {
             List<Project> projects = new();
             projects = await _context.Projects
+                .Include(p => p.Company)
                 .Include(p => p.Members)
                 .Include(p=>p.ProjectPriority)
                 .Include(p => p.Tickets)

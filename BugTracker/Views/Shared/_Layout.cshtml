@@ -4,7 +4,6 @@
 @inject IBTNotificationService _notificationService
 @inject UserManager<BTUser> _userManager
 @inject IBTImageService BTImageService
-@{ var notifications = await _notificationService.GetReceivedNotificationsAsync(_userManager.GetUserId(User));}  
 
 <!DOCTYPE html>
 <html lang="en">
@@ -68,8 +67,8 @@
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="" class="img-circle elevation-2" alt="User Image">
-                        @*<img class="img-circle elevation-2" src="@BTImageService.DecodeImage()" alt="User Image">*@
+                        @*<img src="" class="img-circle elevation-2" alt="User Image">
+                        <img class="img-circle elevation-2" src="@BTImageService.DecodeImage(Model.BTUser.AvatarFileData, Model.BTUser.AvatarContentType)" alt="User Image">*@
                     </div>
                 </div>
 
@@ -138,14 +137,14 @@
                                 {
                                     <li class="nav-item">
                                         <a class="nav-link text-white" asp-area="" asp-controller="Projects" asp-action="CompanyProjects">
-                                            <i class="fas fa-user-chart nav-icon"></i>
+                                            <i class="fa fa-folder-open-o nav-icon"></i>
                                             <p>All Projects</p>
                                         </a>
                                     </li>
                                 }
                                 <li class="nav-item">
                                     <a class="nav-link text-white" asp-area="" asp-controller="Projects" asp-action="MemberProjects">
-                                        <i class="fas fa-user-chart nav-icon"></i>
+                                        <i class="fa fa-folder-open-o nav-icon"></i>
                                         <p>Member Projects</p>
                                     </a>
                                 </li>
@@ -169,7 +168,7 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                                @if ((User.IsInRole("Admin") || User.IsInRole("ProjectManager")))
+                                @if(User.IsInRole("Admin"))
                                 {
 
                                     <li class="nav-item">

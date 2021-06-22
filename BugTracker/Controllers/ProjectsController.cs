@@ -172,22 +172,15 @@ namespace BugTracker.Controllers
 
         public async Task<IActionResult> AssignUsers(int id)
         {
-            ProjectMembersViewModel model = new();
-
-            //get company id
             int companyId = User.Identity.GetCompanyId().Value;
-            Project project = (await _projectService.GetAllProjectsByCompanyAsync(companyId))
-                                .FirstOrDefault(project => project.Id == id);
-
+            ProjectMembersViewModel model = new();
+            var project = (await _projectService.GetAllProjectsByCompanyAsync(companyId))
+                                               .FirstOrDefault(p => p.Id == id);
             model.Project = project;
-            List<BTUser> developers = await _infoService.GetMembersInRoleAsync(Roles.Developer.ToString(),companyId);
-            List<BTUser> submitters = await _infoService.GetMembersInRoleAsync(Roles.Submitter.ToString(), companyId);
-
-            List<BTUser> users = developers.Concat(submitters).ToList();
-            List<string> members = project.Members.Select(m => m.Id).ToList();
+            List<BTUser> users = await _infoService.GetAllMembersAsync(companyId);
+            List<string> members = project.Company.Members.Select(m => m.Id).ToList();  // we can do this because our project eagerly loaded its members
             model.Users = new MultiSelectList(users, "Id", "FullName", members);
             return View(model);
-
         }
 
         //POST Assing Users
