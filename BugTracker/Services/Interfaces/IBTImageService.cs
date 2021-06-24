@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace BugTracker.Services.Interfaces
     {
         //encode an image from an upload control
         Task<byte[]> EncodeFileAsync(IFormFile file);
+        Task<byte[]> EncodeFileAsync(Image file);
 
         //ENCODE AN IMAGE FROM A URL
 

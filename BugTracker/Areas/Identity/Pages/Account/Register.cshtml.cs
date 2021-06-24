@@ -21,6 +21,8 @@ using Microsoft.AspNetCore.Http;
 using BugTracker.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 
 namespace BugTracker.Areas.Identity.Pages.Account
 {
@@ -112,6 +114,12 @@ namespace BugTracker.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                //using var image = Image.Load(Input.ImageData.OpenReadStream());
+                //image.Mutate(x => x.Resize(256, 256));
+                //image.Save("...");
+                //return image;
+
+
                 var user = new BTUser {
                     UserName = Input.Email,
                     Email = Input.Email,

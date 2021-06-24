@@ -1,5 +1,7 @@
 ﻿using BugTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -64,6 +66,13 @@ namespace BugTracker.Services
         {
             var validExt = fileType.Contains(ContentType(file));
             return validExt;
+        }
+
+       public async Task<byte[]> EncodeFileAsync(Image file)
+        {
+            if (file is null) return null;
+              var imageData = file.ToBase64String((IImageFormat)file);
+            return Convert.FromBase64String(imageData);
         }
     }
 }

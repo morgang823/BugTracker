@@ -7,46 +7,8 @@
 
 <h1>Details</h1>
 
-<div>
-    <h4>Company</h4>
+<h4 class="bg-success">Company</h4>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageFileName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ImageFileName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageFileData)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ImageFileData)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageContentType)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ImageContentType)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
 
 
 <section class="content">
@@ -74,7 +36,6 @@
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
                                 <b>Total Projects</b> @Html.DisplayFor(model => model.Projects.Count)
-
                             </li>
                             <li class="list-group-item">
                                 <b>Total Tickets</b> @Html.DisplayFor(model => model.Tickets.Count)
@@ -100,6 +61,66 @@
                     </div><!-- /.card-header -->
                     <div class="card-body">
                         <div class="tab-content">
+                            <table id="example2" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th>
+                                           Description
+                                        </th>
+                                        <th>
+                                            StartDate
+                                        </th>
+                                        <th>
+                                            EndDate
+                                        </th>
+                                        <th>
+                                            Archived
+                                        </th>
+                                        <th>
+                                            Company
+                                        </th>
+                                        <th>
+                                            ProjectPriority
+                                        </th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Projects)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.StartDate)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.EndDate)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Archived)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Company.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ProjectPriority.Name)
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-success text-white" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
                             <div class="active tab-pane" id="activity">
                             </div>
                             <!-- /.tab-pane -->
@@ -121,3 +142,10 @@
         <!-- /.col -->
     </div>
 </section>
+@section Scripts{
+    <script>
+        $(function () {
+            $('#example2').DataTable();
+        });
+    </script>
+}

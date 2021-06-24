@@ -41,7 +41,11 @@ namespace BugTracker.Controllers
             }
 
             var company = await _context.Company
+                .Include(m => m.Members)
+                .Include(p => p.Projects)
                 .FirstOrDefaultAsync(m => m.Id == id);
+                
+                
             if (company == null)
             {
                 return NotFound();
