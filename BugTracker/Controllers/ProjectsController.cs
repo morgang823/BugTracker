@@ -45,8 +45,8 @@ namespace BugTracker.Controllers
         {
             //Get CompanyID
             int companyId = User.Identity.GetCompanyId().Value;
-            var tickets = (await _infoService.GetAllProjectsAsync(companyId));
-            return View(tickets);
+            var projects = (await _infoService.GetAllProjectsAsync(companyId));
+            return View(projects);
         }
         [Authorize]
         public async Task<IActionResult> MemberProjects()
