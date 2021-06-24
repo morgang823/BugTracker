@@ -392,7 +392,7 @@ namespace BugTracker.Controllers
             ViewData["TicketStatusId"] = new SelectList(_context.Set<TicketStatus>(), "Id", "Name", ticket.TicketStatusId);
             ViewData["TicketTypeId"] = new SelectList(_context.Set<TicketType>(), "Id", "Name", ticket.TicketTypeId);
             //return View(ticket);
-            return RedirectToAction("Details", "Ticket", new {ticket.Id});
+            return RedirectToAction("Details", "Tickets", new {ticket.Id});
 
         }
 

@@ -241,8 +241,8 @@
                                                     @Html.DisplayFor(modelItem => item.TicketStatus.Name)
                                                 </td>
                                                 <td class="btn-group btn-success text-white btn-outline-dark">
-                                                    <a class="text-dark font-weight-bold" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                                    <a class="text-dark font-weight-bold" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                                    <a class="text-dark font-weight-bold" asp-controller="Tickets" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                                    <a class="text-dark font-weight-bold" asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id">Details</a> |
                                                 </td>
                                             </tr>
                                         }
@@ -287,8 +287,8 @@
                                                     @Html.DisplayFor(modelItem => item.TicketStatus.Name)
                                                 </td>
                                                 <td class="btn-group btn-success text-white btn-outline-dark">
-                                                    <a class="text-dark font-weight-bold" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                                    <a class="text-dark font-weight-bold" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                                    <a class="text-dark font-weight-bold" asp-controller="Tickets" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                                    <a class="text-dark font-weight-bold" asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id">Details</a> |
                                                 </td>
                                             </tr>
                                         }
@@ -333,7 +333,7 @@
                                                     @Html.DisplayFor(modelItem => item.TicketStatus.Name)
                                                 </td>
                                                 <td class="btn-group btn-success text-white btn-outline-dark">
-                                                    <a class="text-dark font-weight-bold" asp-action="Details" asp-route-id="@item.Id">Ticket Details</a> |
+                                                    <a class="text-dark font-weight-bold" asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id">Ticket Details</a> |
                                                 </td>
                                             </tr>
                                         }
@@ -379,7 +379,7 @@
                                                     @Html.DisplayFor(modelItem => item.TicketStatus.Name)
                                                 </td>
                                                 <td class="btn-group btn-success text-white btn-outline-dark">
-                                                    <a class="text-dark font-weight-bold" asp-action="Details" asp-route-id="@item.Id">Ticket Details</a>
+                                                    <a class="text-dark font-weight-bold" asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id">Ticket Details</a>
                                                 </td>
                                             </tr>
                                         }
