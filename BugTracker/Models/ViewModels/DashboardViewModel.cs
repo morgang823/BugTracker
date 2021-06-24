@@ -12,7 +12,6 @@ namespace BugTracker.Models.ViewModels
         public List<Ticket> Tickets { get; set; }
 
         public List<BTUser> Members { get; set; }
-        public string Roles { get; set; }
 
         public int UnassignedTickets { get; set; }
         public int DevelopmentTickets { get; set; }

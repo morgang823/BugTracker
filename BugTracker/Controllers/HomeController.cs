@@ -23,8 +23,6 @@ namespace BugTracker.Controllers
         private readonly IBTProjectService _projectService;
         private readonly IBTTicketService _ticketService;
         private readonly IBTRolesService _roleService;
-        private readonly IBTImageService _imageService;
-
         public HomeController(ILogger<HomeController> logger, UserManager<BTUser> userManager, IBTCompanyInfoService infoService, IBTProjectService projectService, IBTTicketService ticketService, IBTRolesService roleService)
         {
             _logger = logger;

@@ -1,8 +1,11 @@
 ﻿@model BugTracker.Models.ViewModels.DashboardViewModel
 @using BugTracker.Services.Interfaces
 @using BugTracker.Models
+@using Microsoft.AspNetCore.Identity;
+
 @inject IBTImageService BTImageService
 @inject IBTRolesService _roleService
+@inject UserManager<BTUser> _userManager
 @{
     ViewData["Title"] = "Dashboard";
 }
@@ -168,17 +171,17 @@
                         <!-- /.card-header -->
                         <div class="card-body p-0">
                             <div class="row">
-                            <ul class="users-list clearfix">
-                                @foreach (var member in Model.Members)
-                                {
-                                    <li>
-                                        <img class="img-lg" src="@BTImageService.DecodeImage(member.AvatarFileData, member.AvatarContentType)" alt="User Image" style="inline-size:fit-content()">
-                                        <h3>@member.FullName</h3>
-                                        <span class="users-list-date">@await _roleService.ListUserRolesAsync(member)</span>
-                                    </li>
-                                }
-                            </ul>
-                            <!-- /.users-list -->
+                                <ul class="users-list clearfix">
+                                    @foreach (var member in Model.Members)
+                                    {
+                                        <li>
+                                            <img class="img-lg" src="@BTImageService.DecodeImage(member.AvatarFileData, member.AvatarContentType)" alt="User Image" style="inline-size:fit-content()">
+                                            <h3>@member.FullName</h3>
+                                            <span class="users-list-date">@((await _userManager.GetRolesAsync(member)).FirstOrDefault())</span>
+                                        </li>
+                                    }
+                                </ul>
+                                <!-- /.users-list -->
                             </div>
                         </div>
                         <!-- /.card-body -->
