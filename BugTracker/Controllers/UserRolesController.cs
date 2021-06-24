@@ -1,4 +1,5 @@
 ﻿using BugTracker.Data;
+using BugTracker.Extensions;
 using BugTracker.Models;
 using BugTracker.Models.Enums;
 using BugTracker.Models.ViewModels;
@@ -33,9 +34,11 @@ namespace BugTracker.Controllers
         [HttpGet]
         public async Task<IActionResult> ManageUserRoles()
         {
+            int companyId = User.Identity.GetCompanyId().Value;
+
             List<ManageUserRolesViewModel> model = new();
 
-            List<BTUser> users = _context.Users.ToList();
+            List<BTUser> users = _context.Users.Where(u => u.CompanyId == companyId).ToList();
 
             foreach(var user in users)
             {
