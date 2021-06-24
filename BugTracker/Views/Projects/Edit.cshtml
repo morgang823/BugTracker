@@ -5,7 +5,7 @@
 }
 <h1 class="bg-success">Edit Projects</h1>
 
-@if ((User.IsInRole("Administrator")) || (User.IsInRole("ProjectManager")))
+@if ((User.IsInRole("Admin")) || (User.IsInRole("ProjectManager")))
 {
 
     <!-- Content Header (Page header) -->
@@ -21,6 +21,9 @@
     <!-- Main content -->
     <section class="content">
         <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="StartDate" />
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
                 <div class="col-lg-6">
@@ -37,12 +40,7 @@
                             <div class="form-group">
                                 <label asp-for="Description" class="form-control"></label>
                                 <span asp-validation-for="Description" class="text-danger"></span>
-                                <textarea id="inputDescription" class="form-control bg-light text-dark" rows="4"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="StartDate" class="control-label"></label>
-                                <input asp-for="StartDate" class="form-control bg-light text-dark" />
-                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                                <textarea asp-for="Description" id="inputDescription" class="form-control bg-light text-dark" rows="4"></textarea>
                             </div>
                             <div class="form-group">
                                 <label asp-for="EndDate" class="control-label"></label>
@@ -58,16 +56,6 @@
                                 <label asp-for="ImageFileName" class="control-label"></label>
                                 <input asp-for="ImageFileName" class="form-control" />
                                 <span asp-validation-for="ImageFileName" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="ImageFileData" class="control-label"></label>
-                                <input asp-for="ImageFileData" class="form-control" />
-                                <span asp-validation-for="ImageFileData" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="ImageContentType" class="control-label"></label>
-                                <input asp-for="ImageContentType" class="form-control" />
-                                <span asp-validation-for="ImageContentType" class="text-danger"></span>
                             </div>
                             <div class="form-group form-check">
                                 <label class="form-check-label">

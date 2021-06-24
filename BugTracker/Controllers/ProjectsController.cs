@@ -103,7 +103,7 @@ namespace BugTracker.Controllers
                 project.CompanyId = companyId;
                 _context.Add(project);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(MemberProjects));
+                return RedirectToAction("Details", "Projects", new { project.Id });
             }
             ViewData["ProjectPriorityId"] = new SelectList(_context.Set<ProjectPriority>(), "Id", "Name", project.ProjectPriorityId);
             return View(project);
@@ -124,7 +124,7 @@ namespace BugTracker.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProjectPriorityId"] = new SelectList(_context.Set<ProjectPriority>(), "Id", "Id", project.ProjectPriorityId);
+            ViewData["ProjectPriorityId"] = new SelectList(_context.Set<ProjectPriority>(), "Id", "Name", project.ProjectPriorityId);
             return View(project);
         }
 
@@ -146,6 +146,8 @@ namespace BugTracker.Controllers
             {
                 try
                 {
+                    int companyId = User.Identity.GetCompanyId().Value;
+                    project.CompanyId = companyId;
                     _context.Update(project);
                     await _context.SaveChangesAsync();
                 }
@@ -160,9 +162,9 @@ namespace BugTracker.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Projects", new { project.Id });
             }
-            ViewData["ProjectPriorityId"] = new SelectList(_context.Set<ProjectPriority>(), "Id", "Id", project.ProjectPriorityId);
+            ViewData["ProjectPriorityId"] = new SelectList(_context.Set<ProjectPriority>(), "Id", "Name", project.ProjectPriorityId);
             return View(project);
         }
 
