@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Create";
 }
-@if ((User.IsInRole("Administrator")) || (User.IsInRole("ProjectManager")))
+@if(User.IsInRole("Admin") || (User.IsInRole("ProjectManager")))
 {
     <h1 class=" bg-success">Create a Project</h1>
 
