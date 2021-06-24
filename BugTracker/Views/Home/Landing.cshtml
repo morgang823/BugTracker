@@ -1,49 +1,66 @@
 ﻿@{
-    Layout = null;
+    Layout = "/Views/Shared/_LandingLayout.cshtml";
 ViewData["Title"] = "BT-Landing Page";
 }
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
-</head>
-<body class="hold-transition dark-mode bg-success">
-    <!-- Automatic element centering -->
-    <div class="container">
-            <img src="~/icons8-insect-48.png" />
-        <h1 class="align-content-center">A Bug's Life : Issue Tracking Application</h1>
-        <!-- User name -->
-            <div class="card bg-black">
-                <div class="card-header">
-                    <h3 class="text-white">"Track project progression through a comprehensive ticket system.</h3>
+    <section class="hero">
+        <div class="container">
+            <div class="hero-inner">
+                <div class="hero-copy">
+                    <h1 class="hero-title mt-0">A Bug's Life</h1>
+                    <p class="hero-paragraph">This Issue Tracking Application will allow you to manage and complete projects with more insight than ever before.</p>
+                    <div class="hero-cta" id="splash"><a style="background-color:forestgreen;" class="button" asp-area="Identity" asp-page="/Account/Login">Try it Out</a><a class="button" href="https://www.giannimorgan.com/">Get in touch</a></div>
                 </div>
-                <div class="card-body">
-                    <ul class="text-lg">Allow For:
-                    <li class="text-lg">Organization of Project Components</li>
-                    <li class="text-lg">Create tickets By Priority, Type, and Status</li>
-                    <li class="text-lg">Manage User Roles</li>
-                    <li class="text-lg">Add Attachment and Comments to Tickets</li>
-                    <li class="text-lg"> And So Much More....</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-            <a class="btn btn-outline-success btn-lg" asp-area="Identity" asp-page="/Account/Login">Try it Out</a>
+                <div class="hero-figure anime-element">
+                    <svg class="placeholder" width="528" height="396" viewBox="0 0 528 396">
+                        <rect width="528" height="396" style="fill:transparent;" />
+                    </svg>
+                    <div class="hero-figure-box hero-figure-box-01" data-rotation="45deg"></div>
+                    <div class="hero-figure-box hero-figure-box-02" data-rotation="-45deg"></div>
+                    <div class="hero-figure-box hero-figure-box-03" data-rotation="0deg"></div>
+                    <div class="hero-figure-box hero-figure-box-04" data-rotation="-135deg"></div>
+                    <div class="hero-figure-box hero-figure-box-05"></div>
+                    <div class="hero-figure-box hero-figure-box-06"></div>
+                    <div class="hero-figure-box hero-figure-box-07"></div>
+                    <div class="hero-figure-box hero-figure-box-08" data-rotation="-22deg"></div>
+                    <div class="hero-figure-box hero-figure-box-09" data-rotation="-52deg"></div>
+                    <div class="hero-figure-box hero-figure-box-10" data-rotation="-50deg"></div>
                 </div>
             </div>
-    </div>
-    <!-- /.center -->
-    <!-- jQuery -->
-    <script src="../../plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+        </div>
+    </section>
+
+    <section class="features section">
+        <div class="container">
+            <div class="features-inner section-inner has-bottom-divider">
+                <div class="features-wrap">
+                    <div class="feature text-center is-revealing">
+                        <div class="feature-inner">
+                            <div class="feature-icon">
+                                <img src="~/icons8-insect-48.png" />
+                            </div>
+                            <h4 class="feature-title mt-24">Project/Ticket Management </h4>
+                            <p class="text-sm mb-0">Track project progression through a comprehensive ticket system. Using a ticket cycle that starts from open to close and has different properties such as priority, type, and status.</p>
+                        </div>
+                    </div>
+                    <div class="feature text-center is-revealing">
+                        <div class="feature-inner">
+                            <div class="feature-icon">
+                                <img src="~/icons8-insect-48.png" />
+                            </div>
+                            <h4 class="feature-title mt-24">Role Based Security</h4>
+                            <p class="text-sm mb-0">Assign users to roles that have different permissions based on those roles. Allows for what is visible to the user to be modified as well as their capabilities.</p>
+                        </div>
+                    </div>
+                    <div class="feature text-center is-revealing">
+                        <div class="feature-inner">
+                            <div class="feature-icon">
+                                <img src="~/icons8-insect-48.png" />
+                            </div>
+                            <h4 class="feature-title mt-24">Multi-Tenant</h4>
+                            <p class="text-sm mb-0">Different companies with multiple users can exist and they will not be able to view or modify any of your projects or tickets.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
