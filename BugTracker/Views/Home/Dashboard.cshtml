@@ -170,19 +170,18 @@
                         <h3 class="card-title">Members List</h3>
                         <!-- /.card-header -->
                         <div class="card-body p-0">
-                            <div class="row">
-                                <ul class="users-list clearfix">
+                                <ul class="users-list clearfix user-block col-12">
                                     @foreach (var member in Model.Members)
                                     {
-                                        <li>
-                                            <img class="img-lg" src="@BTImageService.DecodeImage(member.AvatarFileData, member.AvatarContentType)" alt="User Image" style="inline-size:fit-content()">
+
+                                        <li class="col-3">
+                                            <img class="img-circle img-bordered-sm" src="@BTImageService.DecodeImage(member.AvatarFileData, member.AvatarContentType)" alt="User Image" style="inline-size:fit-content()">
                                             <h3>@member.FullName</h3>
                                             <span class="users-list-date">@((await _userManager.GetRolesAsync(member)).FirstOrDefault())</span>
                                         </li>
                                     }
                                 </ul>
                                 <!-- /.users-list -->
-                            </div>
                         </div>
                         <!-- /.card-body -->
                         <!-- /.card-footer -->
