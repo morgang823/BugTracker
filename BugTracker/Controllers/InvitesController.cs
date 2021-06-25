@@ -70,11 +70,12 @@ namespace BugTracker.Controllers
         // GET: Invites/Create
         public async Task<IActionResult> CreateAsync()
         {
+            int companyId = User.Identity.GetCompanyId().Value;
             InviteViewModel model = new();
 
             if (User.IsInRole("Admin"))
             {
-                model.ProjectsList = new SelectList(_context.Projects, "Id", "Name");
+                model.ProjectsList = new SelectList(_context.Projects.Where(p => p.CompanyId == companyId), "Id", "Name");
             }
             else if (User.IsInRole("ProjectManager"))
             {
