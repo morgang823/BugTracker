@@ -57,6 +57,14 @@ namespace BugTracker.Controllers
             var tickets = (await _infoService.GetAllTicketsAsync(companyId));
             return View(tickets);
         }
+        //[Authorize(Roles = "ProjectManager")]
+        //public async Task<IActionResult> AllTickets()
+        //{
+        //    //Get CompanyID
+        //    int companyId = User.Identity.GetCompanyId().Value;
+        //    var tickets = (await _infoService.GetAllTicketsAsync(companyId));
+        //    return View(tickets);
+        //}
         //Get
         [HttpGet]
         [Authorize(Roles = "ProjectManager")]

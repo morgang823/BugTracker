@@ -243,6 +243,20 @@ namespace BugTracker.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, ProjectManager")]
 
+        [HttpGet]
+        [Authorize(Roles = "Admin, ProjectManager")]
+
+        //public async Task<IActionResult> AssignPM(int id)
+        //{
+        //    int companyId = User.Identity.GetCompanyId().Value;
+        //    ProjectMembersViewModel model = new();
+        //    var projects = (await _projectService.GetAllProjectsByCompanyAsync(companyId));
+        //    model.Projects = project;
+        //    List<BTUser> users = await _infoService.GetAllMembersAsync(companyId);
+        //    List<string> members = project.Company.Members.Select(m => m.Id).ToList();  // we can do this because our project eagerly loaded its members
+        //    model.Users = new MultiSelectList(users, "Id", "FullName", members);
+        //    return View(model);
+        //}
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var project = await _context.Projects.FindAsync(id);

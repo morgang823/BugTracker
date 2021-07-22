@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!--Sweet Alert CDN-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Font Awesome Icons -->
     <link href="~/plugins/fontawesome-free/css/all.css" rel="stylesheet" />
     <link runat="server" rel="shortcut icon" href="~/icons8-insect-48.png" type="image/x-icon" />
@@ -237,6 +239,7 @@
     <!-- DataTables  & Plugins -->
     <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="sweetalert2.all.min.js"></script>
     <!-- AdminLTE App -->
     <script src="~/dist/js/adminlte.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
