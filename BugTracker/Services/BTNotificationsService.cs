@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace BugTracker.Services
 {
+    //service for notification
     public class BTNotificationsService : IBTNotificationService
     {
         private readonly ApplicationDbContext _context;
